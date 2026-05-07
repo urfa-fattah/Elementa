@@ -1,0 +1,460 @@
+{
+    "H": [
+        { "mass": "1.0078", "abundance": "99.98%", "halfLife": "Stable" },
+        { "mass": "2.0141", "abundance": "0.0115%", "halfLife": "Stable" },
+        { "mass": "3.0160", "abundance": "Trace", "halfLife": "12.32 years" }
+    ],
+    "He": [
+        { "mass": "3.0160", "abundance": "0.000137%", "halfLife": "Stable" },
+        { "mass": "4.0026", "abundance": "99.999863%", "halfLife": "Stable" }
+    ],
+    "Li": [
+        { "mass": "6.0151", "abundance": "7.59%", "halfLife": "Stable" },
+        { "mass": "7.0160", "abundance": "92.41%", "halfLife": "Stable" }
+    ],
+    "Be": [
+        { "mass": "9.0122", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "B": [
+        { "mass": "10.0129", "abundance": "19.9%", "halfLife": "Stable" },
+        { "mass": "11.0093", "abundance": "80.1%", "halfLife": "Stable" }
+    ],
+    "C": [
+        { "mass": "12.0000", "abundance": "98.93%", "halfLife": "Stable" },
+        { "mass": "13.0034", "abundance": "1.07%", "halfLife": "Stable" },
+        { "mass": "14.0032", "abundance": "Trace", "halfLife": "5,730 years" }
+    ],
+    "N": [
+        { "mass": "14.0031", "abundance": "99.63%", "halfLife": "Stable" },
+        { "mass": "15.0001", "abundance": "0.37%", "halfLife": "Stable" }
+    ],
+    "O": [
+        { "mass": "15.9949", "abundance": "99.76%", "halfLife": "Stable" },
+        { "mass": "16.9991", "abundance": "0.04%", "halfLife": "Stable" },
+        { "mass": "17.9992", "abundance": "0.20%", "halfLife": "Stable" }
+    ],
+    "F": [
+        { "mass": "18.9984", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Ne": [
+        { "mass": "19.9924", "abundance": "90.48%", "halfLife": "Stable" },
+        { "mass": "20.9938", "abundance": "0.27%", "halfLife": "Stable" },
+        { "mass": "21.9914", "abundance": "9.25%", "halfLife": "Stable" }
+    ],
+    "Na": [
+        { "mass": "22.9898", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Mg": [
+        { "mass": "23.9850", "abundance": "78.99%", "halfLife": "Stable" },
+        { "mass": "24.9858", "abundance": "10.00%", "halfLife": "Stable" },
+        { "mass": "25.9826", "abundance": "11.01%", "halfLife": "Stable" }
+    ],
+    "Al": [
+        { "mass": "26.9815", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Si": [
+        { "mass": "27.9769", "abundance": "92.23%", "halfLife": "Stable" },
+        { "mass": "28.9765", "abundance": "4.67%", "halfLife": "Stable" },
+        { "mass": "29.9738", "abundance": "3.10%", "halfLife": "Stable" }
+    ],
+    "P": [
+        { "mass": "30.9738", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "S": [
+        { "mass": "31.9721", "abundance": "94.93%", "halfLife": "Stable" },
+        { "mass": "32.9715", "abundance": "0.76%", "halfLife": "Stable" },
+        { "mass": "33.9679", "abundance": "4.29%", "halfLife": "Stable" }
+    ],
+    "Cl": [
+        { "mass": "34.9689", "abundance": "75.76%", "halfLife": "Stable" },
+        { "mass": "36.9659", "abundance": "24.24%", "halfLife": "Stable" }
+    ],
+    "Ar": [
+        { "mass": "35.9675", "abundance": "0.34%", "halfLife": "Stable" },
+        { "mass": "37.9627", "abundance": "0.06%", "halfLife": "Stable" },
+        { "mass": "39.9624", "abundance": "99.60%", "halfLife": "Stable" }
+    ],
+    "K": [
+        { "mass": "38.9637", "abundance": "93.26%", "halfLife": "Stable" },
+        { "mass": "40.9618", "abundance": "6.73%", "halfLife": "Stable" },
+        { "mass": "40", "abundance": "0.01%", "halfLife": "1.25 billion years" }
+    ],
+    "Ca": [
+        { "mass": "39.9626", "abundance": "96.94%", "halfLife": "Stable" },
+        { "mass": "41.9586", "abundance": "0.65%", "halfLife": "Stable" },
+        { "mass": "42.9588", "abundance": "2.09%", "halfLife": "Stable" }
+    ],
+    "Sc": [
+        { "mass": "44.9559", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Ti": [
+        { "mass": "45.9526", "abundance": "8.25%", "halfLife": "Stable" },
+        { "mass": "46.9518", "abundance": "7.44%", "halfLife": "Stable" },
+        { "mass": "47.9479", "abundance": "73.72%", "halfLife": "Stable" }
+    ],
+    "V": [
+        { "mass": "49.9472", "abundance": "0.25%", "halfLife": "Stable" },
+        { "mass": "50.9440", "abundance": "99.75%", "halfLife": "Stable" }
+    ],
+    "Cr": [
+        { "mass": "49.9460", "abundance": "4.35%", "halfLife": "Stable" },
+        { "mass": "51.9405", "abundance": "83.79%", "halfLife": "Stable" },
+        { "mass": "52.9407", "abundance": "9.50%", "halfLife": "Stable" }
+    ],
+    "Mn": [
+        { "mass": "54.9380", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Fe": [
+        { "mass": "53.9396", "abundance": "5.85%", "halfLife": "Stable" },
+        { "mass": "55.9349", "abundance": "91.75%", "halfLife": "Stable" },
+        { "mass": "56.9354", "abundance": "2.12%", "halfLife": "Stable" }
+    ],
+    "Co": [
+        { "mass": "58.9332", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Ni": [
+        { "mass": "57.9353", "abundance": "68.08%", "halfLife": "Stable" },
+        { "mass": "59.9308", "abundance": "26.22%", "halfLife": "Stable" },
+        { "mass": "61.9283", "abundance": "3.63%", "halfLife": "Stable" }
+    ],
+    "Cu": [
+        { "mass": "62.9296", "abundance": "69.17%", "halfLife": "Stable" },
+        { "mass": "64.9278", "abundance": "30.83%", "halfLife": "Stable" }
+    ],
+    "Zn": [
+        { "mass": "63.9291", "abundance": "48.63%", "halfLife": "Stable" },
+        { "mass": "65.9260", "abundance": "27.90%", "halfLife": "Stable" },
+        { "mass": "67.9248", "abundance": "18.75%", "halfLife": "Stable" }
+    ],
+    "Ga": [
+        { "mass": "68.9256", "abundance": "60.11%", "halfLife": "Stable" },
+        { "mass": "70.9247", "abundance": "39.89%", "halfLife": "Stable" }
+    ],
+    "Ge": [
+        { "mass": "69.9242", "abundance": "20.84%", "halfLife": "Stable" },
+        { "mass": "71.9221", "abundance": "27.54%", "halfLife": "Stable" },
+        { "mass": "73.9212", "abundance": "36.28%", "halfLife": "Stable" }
+    ],
+    "As": [
+        { "mass": "74.9216", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Se": [
+        { "mass": "73.9225", "abundance": "0.89%", "halfLife": "Stable" },
+        { "mass": "75.9192", "abundance": "9.37%", "halfLife": "Stable" },
+        { "mass": "77.9173", "abundance": "23.77%", "halfLife": "Stable" }
+    ],
+    "Br": [
+        { "mass": "78.9183", "abundance": "50.69%", "halfLife": "Stable" },
+        { "mass": "80.9163", "abundance": "49.31%", "halfLife": "Stable" }
+    ],
+    "Kr": [
+        { "mass": "81.9135", "abundance": "11.58%", "halfLife": "Stable" },
+        { "mass": "82.9141", "abundance": "11.59%", "halfLife": "Stable" },
+        { "mass": "83.9115", "abundance": "57.00%", "halfLife": "Stable" }
+    ],
+    "Rb": [
+        { "mass": "84.9118", "abundance": "72.17%", "halfLife": "Stable" },
+        { "mass": "86.9092", "abundance": "27.83%", "halfLife": "4.92 × 10^10 years" }
+    ],
+    "Sr": [
+        { "mass": "83.9134", "abundance": "0.56%", "halfLife": "Stable" },
+        { "mass": "85.9093", "abundance": "9.86%", "halfLife": "Stable" },
+        { "mass": "87.9056", "abundance": "82.58%", "halfLife": "Stable" }
+    ],
+    "Y": [
+        { "mass": "88.9058", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Zr": [
+        { "mass": "89.9047", "abundance": "51.45%", "halfLife": "Stable" },
+        { "mass": "91.9050", "abundance": "11.22%", "halfLife": "Stable" },
+        { "mass": "93.9063", "abundance": "17.15%", "halfLife": "Stable" }
+    ],
+    "Nb": [
+        { "mass": "92.9064", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Mo": [
+        { "mass": "91.9068", "abundance": "14.84%", "halfLife": "Stable" },
+        { "mass": "94.9058", "abundance": "9.25%", "halfLife": "Stable" },
+        { "mass": "95.9047", "abundance": "15.92%", "halfLife": "Stable" }
+    ],
+    "Tc": [
+        { "mass": "98", "abundance": "0%", "halfLife": "4.2 million years" }
+    ],
+    "Ru": [
+        { "mass": "95.9076", "abundance": "5.54%", "halfLife": "Stable" },
+        { "mass": "99.9042", "abundance": "12.76%", "halfLife": "Stable" },
+        { "mass": "101.9043", "abundance": "17.06%", "halfLife": "Stable" }
+    ],
+    "Rh": [
+        { "mass": "102.9055", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Pd": [
+        { "mass": "101.9056", "abundance": "1.02%", "halfLife": "Stable" },
+        { "mass": "103.9040", "abundance": "11.14%", "halfLife": "Stable" },
+        { "mass": "105.9035", "abundance": "22.33%", "halfLife": "Stable" }
+    ],
+    "Ag": [
+        { "mass": "106.9051", "abundance": "51.84%", "halfLife": "Stable" },
+        { "mass": "108.9048", "abundance": "48.16%", "halfLife": "Stable" }
+    ],
+    "Cd": [
+        { "mass": "109.9030", "abundance": "12.49%", "halfLife": "Stable" },
+        { "mass": "111.9028", "abundance": "24.13%", "halfLife": "Stable" },
+        { "mass": "113.9034", "abundance": "28.73%", "halfLife": "Stable" }
+    ],
+    "In": [
+        { "mass": "112.9041", "abundance": "4.29%", "halfLife": "Stable" },
+        { "mass": "114.9039", "abundance": "95.71%", "halfLife": "Stable" }
+    ],
+    "Sn": [
+        { "mass": "115.9017", "abundance": "0.34%", "halfLife": "Stable" },
+        { "mass": "117.9016", "abundance": "7.68%", "halfLife": "Stable" },
+        { "mass": "119.9022", "abundance": "24.22%", "halfLife": "Stable" }
+    ],
+    "Sb": [
+        { "mass": "120.9038", "abundance": "57.21%", "halfLife": "Stable" },
+        { "mass": "122.9042", "abundance": "42.79%", "halfLife": "Stable" }
+    ],
+    "Te": [
+        { "mass": "119.9040", "abundance": "0.09%", "halfLife": "Stable" },
+        { "mass": "121.9030", "abundance": "2.55%", "halfLife": "Stable" },
+        { "mass": "123.9028", "abundance": "4.74%", "halfLife": "Stable" }
+    ],
+    "I": [
+        { "mass": "126.9045", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Xe": [
+        { "mass": "127.9035", "abundance": "1.91%", "halfLife": "Stable" },
+        { "mass": "129.9035", "abundance": "26.44%", "halfLife": "Stable" },
+        { "mass": "131.9042", "abundance": "21.18%", "halfLife": "Stable" }
+    ],
+    "Cs": [
+        { "mass": "132.9055", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Ba": [
+        { "mass": "133.9045", "abundance": "0.11%", "halfLife": "Stable" },
+        { "mass": "135.9046", "abundance": "6.59%", "halfLife": "Stable" },
+        { "mass": "137.9052", "abundance": "71.70%", "halfLife": "Stable" }
+    ],
+    "La": [
+        { "mass": "137.9071", "abundance": "0.09%", "halfLife": "Stable" },
+        { "mass": "138.9063", "abundance": "99.91%", "halfLife": "Stable" }
+    ],
+    "Ce": [
+        { "mass": "135.9071", "abundance": "0.19%", "halfLife": "Stable" },
+        { "mass": "137.9050", "abundance": "0.25%", "halfLife": "Stable" },
+        { "mass": "139.9054", "abundance": "88.45%", "halfLife": "Stable" }
+    ],
+    "Pr": [
+        { "mass": "140.9077", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Nd": [
+        { "mass": "141.9077", "abundance": "27.15%", "halfLife": "Stable" },
+        { "mass": "143.9101", "abundance": "12.17%", "halfLife": "Stable" },
+        { "mass": "145.9131", "abundance": "8.30%", "halfLife": "Stable" }
+    ],
+    "Pm": [
+        { "mass": "145", "abundance": "0%", "halfLife": "17.7 years" }
+    ],
+    "Sm": [
+        { "mass": "143.9120", "abundance": "3.07%", "halfLife": "Stable" },
+        { "mass": "147.9148", "abundance": "14.99%", "halfLife": "Stable" },
+        { "mass": "149.9173", "abundance": "13.82%", "halfLife": "Stable" }
+    ],
+    "Eu": [
+        { "mass": "150.9199", "abundance": "47.81%", "halfLife": "Stable" },
+        { "mass": "152.9212", "abundance": "52.19%", "halfLife": "Stable" }
+    ],
+    "Gd": [
+        { "mass": "151.9198", "abundance": "0.20%", "halfLife": "Stable" },
+        { "mass": "153.9209", "abundance": "2.18%", "halfLife": "Stable" },
+        { "mass": "157.9241", "abundance": "15.65%", "halfLife": "Stable" }
+    ],
+    "Tb": [
+        { "mass": "158.9253", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Dy": [
+        { "mass": "155.9243", "abundance": "0.06%", "halfLife": "Stable" },
+        { "mass": "157.9244", "abundance": "0.10%", "halfLife": "Stable" },
+        { "mass": "161.9268", "abundance": "18.91%", "halfLife": "Stable" }
+    ],
+    "Ho": [
+        { "mass": "164.9303", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Er": [
+        { "mass": "161.9288", "abundance": "0.14%", "halfLife": "Stable" },
+        { "mass": "163.9292", "abundance": "1.61%", "halfLife": "Stable" },
+        { "mass": "165.9303", "abundance": "33.61%", "halfLife": "Stable" }
+    ],
+    "Tm": [
+        { "mass": "168.9342", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Yb": [
+        { "mass": "167.9339", "abundance": "0.13%", "halfLife": "Stable" },
+        { "mass": "169.9348", "abundance": "3.04%", "halfLife": "Stable" },
+        { "mass": "173.9389", "abundance": "31.83%", "halfLife": "Stable" }
+    ],
+    "Lu": [
+        { "mass": "174.9408", "abundance": "97.41%", "halfLife": "Stable" },
+        { "mass": "175.9427", "abundance": "2.59%", "halfLife": "3.78 × 10^10 years" }
+    ],
+    "Hf": [
+        { "mass": "175.9414", "abundance": "0.16%", "halfLife": "Stable" },
+        { "mass": "177.9437", "abundance": "18.60%", "halfLife": "Stable" },
+        { "mass": "179.9466", "abundance": "35.08%", "halfLife": "Stable" }
+    ],
+    "Ta": [
+        { "mass": "180.9479", "abundance": "99.99%", "halfLife": "Stable" },
+        { "mass": "179.9475", "abundance": "0.01%", "halfLife": "1.82 × 10^15 years" }
+    ],
+    "W": [
+        { "mass": "181.9482", "abundance": "0.12%", "halfLife": "Stable" },
+        { "mass": "183.9509", "abundance": "30.64%", "halfLife": "Stable" },
+        { "mass": "185.9544", "abundance": "28.43%", "halfLife": "Stable" }
+    ],
+    "Re": [
+        { "mass": "184.9529", "abundance": "37.40%", "halfLife": "Stable" },
+        { "mass": "186.9558", "abundance": "62.60%", "halfLife": "Stable" }
+    ],
+    "Os": [
+        { "mass": "183.9525", "abundance": "0.02%", "halfLife": "Stable" },
+        { "mass": "185.9538", "abundance": "1.59%", "halfLife": "Stable" },
+        { "mass": "187.9558", "abundance": "13.24%", "halfLife": "Stable" }
+    ],
+    "Ir": [
+        { "mass": "190.9606", "abundance": "37.30%", "halfLife": "Stable" },
+        { "mass": "192.9629", "abundance": "62.70%", "halfLife": "Stable" }
+    ],
+    "Pt": [
+        { "mass": "193.9627", "abundance": "0.79%", "halfLife": "Stable" },
+        { "mass": "194.9648", "abundance": "32.97%", "halfLife": "Stable" },
+        { "mass": "195.9649", "abundance": "33.83%", "halfLife": "Stable" }
+    ],
+    "Au": [
+        { "mass": "196.9666", "abundance": "100%", "halfLife": "Stable" }
+    ],
+    "Hg": [
+        { "mass": "197.9668", "abundance": "0.15%", "halfLife": "Stable" },
+        { "mass": "199.9683", "abundance": "16.87%", "halfLife": "Stable" },
+        { "mass": "201.9706", "abundance": "29.86%", "halfLife": "Stable" }
+    ],
+    "Tl": [
+        { "mass": "202.9723", "abundance": "29.52%", "halfLife": "Stable" },
+        { "mass": "204.9744", "abundance": "70.48%", "halfLife": "Stable" }
+    ],
+    "Pb": [
+        { "mass": "203.9730", "abundance": "1.40%", "halfLife": "Stable" },
+        { "mass": "205.9745", "abundance": "24.10%", "halfLife": "Stable" },
+        { "mass": "207.9766", "abundance": "52.40%", "halfLife": "Stable" }
+    ],
+    "Bi": [
+        { "mass": "208.9804", "abundance": "100%", "halfLife": "1.9 × 10^19 years" }
+    ],
+    "Po": [
+        { "mass": "209", "abundance": "0%", "halfLife": "125.2 years" }
+    ],
+    "At": [
+        { "mass": "210", "abundance": "0%", "halfLife": "8.1 hours" }
+    ],
+    "Rn": [
+        { "mass": "222", "abundance": "0%", "halfLife": "3.82 days" }
+    ],
+    "Fr": [
+        { "mass": "223", "abundance": "0%", "halfLife": "22 minutes" }
+    ],
+    "Ra": [
+        { "mass": "226", "abundance": "0%", "halfLife": "1,600 years" }
+    ],
+    "Ac": [
+        { "mass": "227", "abundance": "0%", "halfLife": "21.77 years" }
+    ],
+    "Th": [
+        { "mass": "232.0381", "abundance": "100%", "halfLife": "14.05 billion years" }
+    ],
+    "Pa": [
+        { "mass": "231.0359", "abundance": "0%", "halfLife": "32,760 years" }
+    ],
+    "U": [
+        { "mass": "235.0439", "abundance": "0.72%", "halfLife": "703.8 million years" },
+        { "mass": "238.0508", "abundance": "99.27%", "halfLife": "4.468 billion years" }
+    ],
+    "Np": [
+        { "mass": "237", "abundance": "0%", "halfLife": "2.144 million years" }
+    ],
+    "Pu": [
+        { "mass": "239", "abundance": "0%", "halfLife": "24,110 years" },
+        { "mass": "240", "abundance": "0%", "halfLife": "6,561 years" }
+    ],
+    "Am": [
+        { "mass": "241", "abundance": "0%", "halfLife": "432.2 years" }
+    ],
+    "Cm": [
+        { "mass": "244", "abundance": "0%", "halfLife": "18.1 years" }
+    ],
+    "Bk": [
+        { "mass": "247", "abundance": "0%", "halfLife": "1,380 years" }
+    ],
+    "Cf": [
+        { "mass": "251", "abundance": "0%", "halfLife": "898 years" }
+    ],
+    "Es": [
+        { "mass": "252", "abundance": "0%", "halfLife": "471.7 days" }
+    ],
+    "Fm": [
+        { "mass": "257", "abundance": "0%", "halfLife": "100.5 days" }
+    ],
+    "Md": [
+        { "mass": "258", "abundance": "0%", "halfLife": "51.5 days" }
+    ],
+    "No": [
+        { "mass": "259", "abundance": "0%", "halfLife": "58 minutes" }
+    ],
+    "Lr": [
+        { "mass": "262", "abundance": "0%", "halfLife": "10 hours" }
+    ],
+    "Rf": [
+        { "mass": "267", "abundance": "0%", "halfLife": "1.3 hours" }
+    ],
+    "Db": [
+        { "mass": "268", "abundance": "0%", "halfLife": "28 hours" }
+    ],
+    "Sg": [
+        { "mass": "271", "abundance": "0%", "halfLife": "2.4 minutes" }
+    ],
+    "Bh": [
+        { "mass": "270", "abundance": "0%", "halfLife": "61 seconds" }
+    ],
+    "Hs": [
+        { "mass": "270", "abundance": "0%", "halfLife": "22 seconds" }
+    ],
+    "Mt": [
+        { "mass": "276", "abundance": "0%", "halfLife": "0.72 seconds" }
+    ],
+    "Ds": [
+        { "mass": "281", "abundance": "0%", "halfLife": "11.1 seconds" }
+    ],
+    "Rg": [
+        { "mass": "280", "abundance": "0%", "halfLife": "3.6 seconds" }
+    ],
+    "Cn": [
+        { "mass": "285", "abundance": "0%", "halfLife": "29 seconds" }
+    ],
+    "Nh": [
+        { "mass": "286", "abundance": "0%", "halfLife": "9.5 seconds" }
+    ],
+    "Fl": [
+        { "mass": "289", "abundance": "0%", "halfLife": "2.6 seconds" }
+    ],
+    "Mc": [
+        { "mass": "288", "abundance": "0%", "halfLife": "0.87 seconds" }
+    ],
+    "Lv": [
+        { "mass": "293", "abundance": "0%", "halfLife": "61 milliseconds" }
+    ],
+    "Ts": [
+        { "mass": "294", "abundance": "0%", "halfLife": "78 milliseconds" }
+    ],
+    "Og": [
+        { "mass": "294", "abundance": "0%", "halfLife": "0.69 milliseconds" }
+    ]
+}

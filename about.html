@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Learn about Elementa — the interactive periodic table created by Rifatuzzaman & Urfa Hasan Fattah.">
+    <meta name="keywords" content="about elementa, rifatuzzaman, urfa hasan fattah, interactive chemistry">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About · Elementa</title>
+    <link rel="icon" href="atom-icon.ico" type="image/x-icon">
+    <link rel="icon" href="atom-icon-192x192.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="atom-icon-512x512.png" sizes="512x512" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --bg-primary: #f7f5f0;
+            --bg-secondary: #ede8df;
+            --bg-surface: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --bg-nav: rgba(247, 245, 240, 0.88);
+            --text-primary: #2c2c2c;
+            --text-secondary: #5c5c5c;
+            --text-muted: #8a8a8a;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --border-strong: rgba(0, 0, 0, 0.14);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10);
+            --accent: #6b9ca8;
+            --accent-soft: #c8dde3;
+            --accent-warm: #b8956a;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-display: 'DM Serif Display', Georgia, serif;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #1c1f24;
+            --bg-secondary: #23262c;
+            --bg-surface: #2a2d34;
+            --bg-glass: rgba(28, 31, 36, 0.82);
+            --bg-nav: rgba(28, 31, 36, 0.85);
+            --text-primary: #e4e1dc;
+            --text-secondary: #b0ada8;
+            --text-muted: #787570;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-strong: rgba(255, 255, 255, 0.12);
+            --accent: #8ab8c4;
+            --accent-soft: #3a5058;
+            --accent-warm: #c4a87a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        body {
+            background: var(--bg-primary);
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            transition: background var(--transition-smooth), color var(--transition-smooth);
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(140, 170, 190, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 60%, rgba(180, 160, 130, 0.03) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 80%, rgba(150, 170, 160, 0.03) 0%, transparent 55%);
+            pointer-events: none; z-index: 0;
+        }
+        [data-theme="dark"] body::before { background: radial-gradient(ellipse at 30% 20%, rgba(140, 180, 200, 0.05) 0%, transparent 55%), radial-gradient(ellipse at 70% 60%, rgba(180, 150, 120, 0.04) 0%, transparent 55%), radial-gradient(ellipse at 50% 80%, rgba(130, 160, 150, 0.04) 0%, transparent 55%); }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: var(--bg-nav); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            padding: 12px 28px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow-md); border-bottom: 1px solid var(--border-subtle); z-index: 1000;
+            transition: transform 0.4s ease, background var(--transition-smooth), border-color var(--transition-smooth);
+            gap: 16px;
+        }
+        .navbar.hidden { transform: translateY(-100%); }
+        .brand { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; color: var(--text-primary); white-space: nowrap; }
+        .brand-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--accent), var(--accent-warm)); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; font-weight: 700; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+        .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .theme-toggle { background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-primary); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); box-shadow: var(--shadow-sm); }
+        .theme-toggle:hover { background: var(--bg-secondary); border-color: var(--border-strong); transform: scale(1.06); box-shadow: var(--shadow-md); }
+        .hamburger { background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-primary); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); box-shadow: var(--shadow-sm); }
+        .hamburger:hover { background: var(--bg-secondary); border-color: var(--border-strong); transform: scale(1.06); box-shadow: var(--shadow-md); }
+
+        /* Side menu */
+        .side-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); }
+        .side-overlay.open { opacity: 1; pointer-events: auto; }
+        .side-menu { position: fixed; top: 0; right: 0; width: 340px; max-width: 88vw; height: 100%; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); z-index: 1001; transform: translateX(100%); transition: transform 0.38s ease; overflow-y: auto; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; }
+        .side-menu.open { transform: translateX(0); }
+        .side-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border-subtle); }
+        .side-menu-header span { font-weight: 600; font-size: 16px; color: var(--text-primary); }
+        .close-btn { background: var(--bg-secondary); border: 1px solid var(--border-subtle); color: var(--text-primary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); }
+        .close-btn:hover { background: #fce4e4; color: #c0392b; }
+        [data-theme="dark"] .close-btn:hover { background: #3a2025; color: #f08080; }
+        .menu-list { list-style: none; padding: 12px 16px; margin: 0; flex-grow: 1; }
+        .menu-list li { margin: 4px 0; }
+        .menu-list a { color: var(--text-primary); text-decoration: none; font-size: 14.5px; font-weight: 500; display: flex; align-items: center; padding: 11px 16px; border-radius: var(--radius-md); background: transparent; border: 1px solid transparent; transition: all var(--transition-fast); gap: 12px; }
+        .menu-list a:hover { background: var(--bg-secondary); border-color: var(--border-subtle); box-shadow: var(--shadow-sm); }
+        .menu-list i { font-size: 16px; width: 22px; text-align: center; color: var(--accent); }
+
+        /* Main container */
+        .container {
+            max-width: 850px; width: 100%; margin: 100px auto 40px; padding: 0 20px;
+            display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1;
+            text-align: center;
+        }
+        .page-title {
+            font-family: var(--font-display); font-size: clamp(36px, 6vw, 56px); font-weight: 400;
+            letter-spacing: -0.5px; margin-bottom: 8px; color: var(--text-primary);
+            transition: color var(--transition-smooth);
+        }
+        .subtitle {
+            font-size: 15px; font-weight: 400; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 32px; transition: color var(--transition-smooth);
+        }
+
+        .section-card {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl); padding: 28px 24px; margin-bottom: 24px;
+            box-shadow: var(--shadow-sm); width: 100%; text-align: left;
+            transition: all var(--transition-fast);
+        }
+        .section-card:hover { box-shadow: var(--shadow-md); }
+        .section-card h2 {
+            font-size: 20px; font-weight: 600; color: var(--accent); margin-bottom: 12px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .section-card h2 i { color: var(--accent-warm); font-size: 18px; }
+        .section-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.7; margin-bottom: 10px; }
+
+        .divider {
+            width: 80px; height: 2px; background: var(--accent-soft); margin: 20px auto;
+            border-radius: 1px; opacity: 0.6;
+        }
+
+        /* Profile cards */
+        .profile-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;
+            margin: 10px 0 20px;
+        }
+        .profile-card {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 22px; text-align: center;
+            box-shadow: var(--shadow-sm); transition: all var(--transition-fast);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .profile-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .profile-img {
+            width: 140px; height: 140px; object-fit: cover; border-radius: 50%;
+            border: 3px solid var(--accent-soft); margin-bottom: 16px;
+            cursor: pointer; transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+        .profile-img:hover {
+            transform: scale(1.05); box-shadow: var(--shadow-md); border-color: var(--accent);
+        }
+        .profile-name { font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+        .profile-role { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .profile-bio { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
+        .social-links {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            margin-top: auto;
+        }
+        .social-links a {
+            color: var(--text-secondary); font-size: 18px; width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+            transition: all var(--transition-fast); text-decoration: none;
+        }
+        .social-links a:hover { color: var(--accent-warm); border-color: var(--accent); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+
+        .cta-buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 12px; }
+        .cta-button {
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
+            border-radius: 50px; font-weight: 600; font-size: 14px; text-decoration: none;
+            background: var(--accent); color: #fff; box-shadow: var(--shadow-md);
+            transition: all var(--transition-fast); border: 1px solid transparent;
+        }
+        .cta-button:hover { background: var(--accent-warm); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .cta-button.secondary {
+            background: transparent; color: var(--text-primary); border: 1px solid var(--border-strong);
+            box-shadow: var(--shadow-sm);
+        }
+        .cta-button.secondary:hover { background: var(--bg-secondary); border-color: var(--accent); color: var(--accent); }
+
+        /* Image preview modal */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000;
+            display: flex; align-items: center; justify-content: center; padding: 30px;
+            opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth);
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: var(--bg-surface); border-radius: var(--radius-xl); padding: 16px;
+            max-width: 90vw; max-height: 85vh; position: relative;
+            box-shadow: var(--shadow-lg);
+        }
+        .modal-content img {
+            max-width: 100%; max-height: 70vh; border-radius: var(--radius-md);
+            display: block;
+        }
+        .modal-close {
+            position: absolute; top: 8px; right: 12px;
+            background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+            color: var(--text-primary); width: 32px; height: 32px; border-radius: 50%;
+            cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+            transition: all var(--transition-fast);
+        }
+        .modal-close:hover { background: #fce4e4; color: #c0392b; }
+
+        /* Footer */
+        footer {
+            margin-top: 20px; padding: 22px 20px; width: 100%;
+            background: var(--bg-glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column;
+            align-items: center; gap: 8px; color: var(--text-muted); font-size: 12px;
+            text-align: center; transition: all var(--transition-smooth); position: relative; z-index: 1;
+        }
+        footer a { color: var(--accent); text-decoration: none; transition: color var(--transition-fast); font-weight: 500; }
+        footer a:hover { color: var(--accent-warm); }
+        footer .cc-icons { display: inline-flex; align-items: center; gap: 3px; vertical-align: middle; }
+        footer .cc-icons img { height: 16px !important; width: auto; filter: grayscale(0.3); }
+
+        @media (max-width: 750px) {
+            .profile-grid { grid-template-columns: 1fr; }
+            .profile-img { width: 120px; height: 120px; }
+        }
+        @media (max-width: 600px) {
+            .container { margin-top: 85px; padding: 0 12px; }
+            .navbar { padding: 8px 10px; gap: 4px; }
+            .brand { font-size: 14px; gap: 4px; }
+            .brand-icon { width: 26px; height: 26px; font-size: 12px; border-radius: 6px; }
+            .hamburger, .theme-toggle { width: 30px; height: 30px; font-size: 14px; }
+            .section-card { padding: 20px 16px; }
+            .profile-card { padding: 16px; }
+            .profile-img { width: 100px; height: 100px; }
+            .page-title { font-size: 32px; }
+            .subtitle { font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="mainNavbar">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true"><i class="fas fa-atom"></i></div>
+            <span>Elementa</span>
+        </div>
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Switch theme"><i class="fas fa-moon"></i></button>
+            <button class="hamburger" id="menuToggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <div class="side-overlay" id="sideOverlay"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <span>Menu</span>
+            <button class="close-btn" id="closeMenuBtn" aria-label="Close menu"><i class="fas fa-times"></i></button>
+        </div>
+        <ul class="menu-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="home.html"><i class="fas fa-table"></i> Periodic Table</a></li>
+            <li><a href="compare.html"><i class="fas fa-balance-scale"></i> Compare Elements</a></li>
+            <li><a href="chemical-nature.html"><i class="fas fa-flask"></i> Chemical Nature</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">About Elementa</h1>
+        <p class="subtitle">The story behind the interactive periodic table</p>
+
+        <div class="section-card">
+            <h2><i class="fas fa-bullseye"></i> The Project</h2>
+            <p>Elementa is a modern, interactive periodic table built to make learning about the chemical elements intuitive and enjoyable. Launched in 2025, it displays all 118 confirmed elements with smart search, category filters, detailed property views, and side-by-side comparisons. Whether you're a student, teacher, or just curious about the building blocks of matter, Elementa provides a clean, calm space to explore chemistry.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="font-size:22px; font-weight:600; color:var(--text-primary); margin:10px 0;">The Creators</h2>
+        <div class="profile-grid">
+            <div class="profile-card">
+                <img src="rifatuzzaman.jpg" alt="Rifatuzzaman" class="profile-img" loading="lazy" onclick="openImagePreview(this.src)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="display:none; width:140px; height:140px; border-radius:50%; background:var(--bg-secondary); align-items:center; justify-content:center;">
+                    <i class="fas fa-user" style="font-size:48px; color:var(--text-muted);"></i>
+                </div>
+                <div class="profile-name">Rifatuzzaman</div>
+                <div class="profile-role">Web Developer</div>
+                <p class="profile-bio">From Jamalpur, I combined my passion for coding and science to build this tool. I love creating accessible, interactive experiences with HTML, CSS, and JavaScript.</p>
+                <div class="social-links">
+                    <a href="https://github.com/rifatuzzaman-rifat" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com" target="_blank" title="Twitter/X"><i class="fab fa-twitter"></i></a>
+                    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="profile-card">
+                <img src="urfa.jpg" alt="Urfa Hasan Fattah" class="profile-img" loading="lazy" onclick="openImagePreview(this.src)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="display:none; width:140px; height:140px; border-radius:50%; background:var(--bg-secondary); align-items:center; justify-content:center;">
+                    <i class="fas fa-user" style="font-size:48px; color:var(--text-muted);"></i>
+                </div>
+                <div class="profile-name">Urfa Hasan Fattah</div>
+                <div class="profile-role">Designer & Science Enthusiast</div>
+                <p class="profile-bio">Based in Netrakona, I shaped the visual identity of Elementa. I'm driven by how technology can make education more engaging and beautiful.</p>
+                <div class="social-links">
+                    <a href="https://github.com/rifatuzzaman-rifat" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com" target="_blank" title="Twitter/X"><i class="fab fa-twitter"></i></a>
+                    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2><i class="fas fa-heart"></i> Why We Built It</h2>
+            <p>We wanted to offer a free, beautiful resource that transforms the classic periodic table into an interactive journey. The goal is to make chemistry feel less intimidating and more like an exploration—whether you’re studying, teaching, or simply satisfying your curiosity.</p>
+        </div>
+
+        <div class="section-card">
+            <h2><i class="fas fa-code"></i> How It’s Built</h2>
+            <p>Elementa runs on plain HTML, CSS, and JavaScript, with React powering the main table. Element data is fetched from a lightweight JSON file, charts use Chart.js, and the entire project is hosted on Netlify. The interface adapts seamlessly to any device, with an optional light/dark theme for comfortable reading.</p>
+        </div>
+
+        <div class="cta-buttons">
+            <a href="home.html" class="cta-button"><i class="fas fa-table"></i> Explore the Table</a>
+            <a href="contact.html" class="cta-button secondary"><i class="fas fa-envelope"></i> Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Image preview modal -->
+    <div class="modal-overlay" id="imageModal" onclick="closeImagePreview()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeImagePreview()"><i class="fas fa-times"></i></button>
+            <img id="modalImage" src="" alt="Profile preview">
+        </div>
+    </div>
+
+    <footer>
+        <span>Data sourced from IUPAC · Atomic masses rounded for simplicity; synthetic elements in brackets [ ].</span>
+        <span>
+            <a href="https://modern-periodic-table.netlify.app" rel="cc:attributionURL">Elementa <i class="fas fa-atom"></i> Periodic Table</a> by 
+            <a href="https://rifatuzzaman-rifat.github.io/rifats" rel="cc:attributionURL dct:creator">Rifatuzzaman & Urfa Hasan Fattah</a> is licensed under 
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer">
+                CC BY-NC-SA 4.0
+                <span class="cc-icons">
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="CC">
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="BY">
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="NC">
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt="SA">
+                </span>
+            </a>
+        </span>
+    </footer>
+
+    <script>
+        (function() {
+            // Theme
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('themeToggle');
+            const currentTheme = localStorage.getItem('elem-theme') || 'dark';
+            html.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            themeToggle.addEventListener('click', () => {
+                const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('elem-theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            function updateThemeIcon(theme) {
+                const icon = themeToggle.querySelector('i');
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            // Navbar scroll hide
+            let lastScrollY = window.pageYOffset;
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('mainNavbar');
+                const current = window.pageYOffset;
+                if (current > lastScrollY && current > 60) navbar.classList.add('hidden');
+                else navbar.classList.remove('hidden');
+                lastScrollY = current;
+            }, { passive: true });
+
+            // Side menu
+            const sideMenu = document.getElementById('sideMenu');
+            const sideOverlay = document.getElementById('sideOverlay');
+            document.getElementById('menuToggle').addEventListener('click', () => {
+                sideMenu.classList.add('open');
+                sideOverlay.classList.add('open');
+            });
+            document.getElementById('closeMenuBtn').addEventListener('click', () => {
+                sideMenu.classList.remove('open');
+                sideOverlay.classList.remove('open');
+            });
+            sideOverlay.addEventListener('click', () => {
+                sideMenu.classList.remove('open');
+                sideOverlay.classList.remove('open');
+            });
+            document.querySelectorAll('.menu-list a').forEach(link => {
+                link.addEventListener('click', () => {
+                    sideMenu.classList.remove('open');
+                    sideOverlay.classList.remove('open');
+                });
+            });
+        })();
+
+        // Image preview functions
+        function openImagePreview(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = src;
+            modal.classList.add('open');
+        }
+        function closeImagePreview() {
+            document.getElementById('imageModal').classList.remove('open');
+        }
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeImagePreview();
+        });
+    </script>
+</body>
+</html>

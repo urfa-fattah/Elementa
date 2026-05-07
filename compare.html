@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Compare elements in the Elementa interactive periodic table by Rifatuzzaman & Urfa Hasan Fattah.">
+    <meta name="keywords" content="periodic table, compare elements, chemistry, elementa, rifatuzzaman, urfa hasan fattah">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elementa — Compare Elements</title>
+    <link rel="icon" href="atom-icon.ico" type="image/x-icon">
+    <link rel="icon" href="atom-icon-192x192.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="atom-icon-512x512.png" sizes="512x512" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #f7f5f0;
+            --bg-secondary: #ede8df;
+            --bg-surface: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --bg-nav: rgba(247, 245, 240, 0.88);
+            --text-primary: #2c2c2c;
+            --text-secondary: #5c5c5c;
+            --text-muted: #8a8a8a;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --border-strong: rgba(0, 0, 0, 0.14);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10);
+            --accent: #6b9ca8;
+            --accent-soft: #c8dde3;
+            --accent-warm: #b8956a;
+            --danger: #d4786e;
+            --chart-bar: rgba(107, 156, 168, 0.7);
+            --chart-bar-hover: #8ab8c4;
+            --chart-grid: rgba(0, 0, 0, 0.06);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-display: 'DM Serif Display', Georgia, serif;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #1c1f24;
+            --bg-secondary: #23262c;
+            --bg-surface: #2a2d34;
+            --bg-glass: rgba(28, 31, 36, 0.82);
+            --bg-nav: rgba(28, 31, 36, 0.85);
+            --text-primary: #e4e1dc;
+            --text-secondary: #b0ada8;
+            --text-muted: #787570;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-strong: rgba(255, 255, 255, 0.12);
+            --chart-bar: rgba(138, 184, 196, 0.7);
+            --chart-bar-hover: #8ab8c4;
+            --chart-grid: rgba(255, 255, 255, 0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        body {
+            background: var(--bg-primary);
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            transition: background var(--transition-smooth), color var(--transition-smooth);
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(140, 170, 190, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 60%, rgba(180, 160, 130, 0.03) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 80%, rgba(150, 170, 160, 0.03) 0%, transparent 55%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        [data-theme="dark"] body::before { background: radial-gradient(ellipse at 30% 20%, rgba(140, 180, 200, 0.05) 0%, transparent 55%), radial-gradient(ellipse at 70% 60%, rgba(180, 150, 120, 0.04) 0%, transparent 55%), radial-gradient(ellipse at 50% 80%, rgba(130, 160, 150, 0.04) 0%, transparent 55%); }
+
+        /* ── Navbar ────────────────────── */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: var(--bg-nav); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            padding: 12px 28px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow-md); border-bottom: 1px solid var(--border-subtle); z-index: 1000;
+            transition: transform 0.4s ease, background var(--transition-smooth), border-color var(--transition-smooth);
+            gap: 16px;
+        }
+        .navbar.hidden { transform: translateY(-100%); }
+        .brand { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; color: var(--text-primary); white-space: nowrap; }
+        .brand-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--accent), var(--accent-warm)); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; font-weight: 700; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+        .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .theme-toggle { background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-primary); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); box-shadow: var(--shadow-sm); }
+        .theme-toggle:hover { background: var(--bg-secondary); border-color: var(--border-strong); transform: scale(1.06); box-shadow: var(--shadow-md); }
+        .hamburger { background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-primary); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); box-shadow: var(--shadow-sm); }
+        .hamburger:hover { background: var(--bg-secondary); border-color: var(--border-strong); transform: scale(1.06); box-shadow: var(--shadow-md); }
+
+        /* ── Side Menu ─────────────────── */
+        .side-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); }
+        .side-overlay.open { opacity: 1; pointer-events: auto; }
+        .side-menu { position: fixed; top: 0; right: 0; width: 340px; max-width: 88vw; height: 100%; background: var(--bg-surface); border-left: 1px solid var(--border-subtle); z-index: 1001; transform: translateX(100%); transition: transform 0.38s ease; overflow-y: auto; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; }
+        .side-menu.open { transform: translateX(0); }
+        .side-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border-subtle); }
+        .side-menu-header span { font-weight: 600; font-size: 16px; color: var(--text-primary); }
+        .close-btn { background: var(--bg-secondary); border: 1px solid var(--border-subtle); color: var(--text-primary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); }
+        .close-btn:hover { background: #fce4e4; color: #c0392b; }
+        [data-theme="dark"] .close-btn:hover { background: #3a2025; color: #f08080; }
+        .menu-list { list-style: none; padding: 12px 16px; margin: 0; flex-grow: 1; overflow-y: auto; }
+        .menu-list li { margin: 4px 0; }
+        .menu-list a { color: var(--text-primary); text-decoration: none; font-size: 14.5px; font-weight: 500; display: flex; align-items: center; padding: 11px 16px; border-radius: var(--radius-md); background: transparent; border: 1px solid transparent; transition: all var(--transition-fast); gap: 12px; }
+        .menu-list a:hover { background: var(--bg-secondary); border-color: var(--border-subtle); box-shadow: var(--shadow-sm); }
+        .menu-list i { font-size: 16px; width: 22px; text-align: center; color: var(--accent); flex-shrink: 0; }
+
+        /* ── Main Container ────────────── */
+        .container {
+            max-width: 1200px; width: 100%; margin: 100px auto 40px; padding: 0 20px;
+            display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1;
+        }
+        .page-title {
+            font-family: var(--font-display); font-size: clamp(32px, 6vw, 48px); font-weight: 400;
+            letter-spacing: -0.5px; margin-bottom: 8px; color: var(--text-primary);
+            text-align: center; transition: color var(--transition-smooth);
+        }
+        .subtitle {
+            font-size: 14px; font-weight: 400; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 30px; text-align: center;
+        }
+
+        /* ── Selection Section ─────────── */
+        .selection-panel {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl); padding: 24px 20px; width: 100%;
+            box-shadow: var(--shadow-md); margin-bottom: 24px;
+            transition: background var(--transition-smooth), border-color var(--transition-smooth);
+        }
+        .mode-toggle-row { display: flex; justify-content: center; margin-bottom: 18px; }
+        .toggle-mode {
+            padding: 8px 20px; font-size: 13px; font-weight: 500; border-radius: 50px;
+            background: var(--accent); color: #fff; border: none; cursor: pointer;
+            transition: all var(--transition-fast); box-shadow: var(--shadow-sm);
+            font-family: var(--font-body); letter-spacing: 0.3px;
+        }
+        .toggle-mode:hover { background: var(--accent-warm); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+        .selection-inputs { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 12px; }
+        .search-box-wrap { position: relative; flex: 1 1 250px; min-width: 180px; }
+        .search-box-wrap input {
+            width: 100%; padding: 10px 40px 10px 16px; border-radius: 30px;
+            border: 1px solid var(--border-subtle); background: var(--bg-secondary);
+            color: var(--text-primary); font-family: var(--font-body); font-size: 14px;
+            outline: none; transition: all var(--transition-fast);
+        }
+        .search-box-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(107,156,168,0.2); }
+        .search-box-wrap .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .dropdown-wrap { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .dropdown-wrap select {
+            padding: 10px 14px; border-radius: 30px; border: 1px solid var(--border-subtle);
+            background: var(--bg-secondary); color: var(--text-primary); font-family: var(--font-body);
+            font-size: 14px; outline: none; cursor: pointer; transition: all var(--transition-fast);
+            flex: 1 1 120px;
+        }
+        .dropdown-wrap select:focus { border-color: var(--accent); }
+        #search-results { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 10px; }
+        #search-results button {
+            padding: 6px 14px; border-radius: 20px; background: var(--accent-soft); color: var(--text-primary);
+            border: 1px solid transparent; font-family: var(--font-body); font-size: 12px; font-weight: 500;
+            cursor: pointer; transition: all var(--transition-fast);
+        }
+        #search-results button:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .selected-elements { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 14px; }
+        .selected-element {
+            padding: 6px 14px; border-radius: 20px; background: var(--danger); color: #fff;
+            font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .selected-element .remove-btn { margin-left: 4px; cursor: pointer; font-size: 14px; line-height: 1; opacity: 0.8; transition: opacity var(--transition-fast); }
+        .selected-element .remove-btn:hover { opacity: 1; }
+
+        /* ── Property Selector ─────────── */
+        .property-selector {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md); padding: 16px 18px; margin-bottom: 24px;
+            display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: center;
+            box-shadow: var(--shadow-sm); width: 100%;
+        }
+        .property-selector h3 { width: 100%; text-align: center; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .property-selector label { font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); }
+        .property-selector input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px; }
+
+        /* ── Comparison Table ──────────── */
+        .comparison-table-wrap { width: 100%; overflow-x: auto; margin-bottom: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+        .comparison-table { width: 100%; border-collapse: collapse; display: none; background: var(--bg-surface); border-radius: var(--radius-lg); overflow: hidden; }
+        .comparison-table th, .comparison-table td { padding: 12px 10px; border: 1px solid var(--border-subtle); text-align: center; font-size: 13px; transition: background var(--transition-fast); }
+        .comparison-table th { background: var(--accent-soft); color: var(--text-primary); font-weight: 600; }
+        .comparison-table td:hover { background: var(--bg-secondary); }
+        .comparison-table .tooltip { position: relative; display: inline-block; width: 100%; }
+        .comparison-table .tooltip-text {
+            visibility: hidden; width: 180px; background: var(--bg-primary); color: var(--text-primary); text-align: center;
+            border-radius: 6px; padding: 6px; position: absolute; z-index: 10; bottom: 125%; left: 50%;
+            transform: translateX(-50%); opacity: 0; transition: opacity var(--transition-fast);
+            border: 1px solid var(--border-strong); font-size: 11px; box-shadow: var(--shadow-md);
+        }
+        .comparison-table .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+        .comparison-table a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        .comparison-table a:hover { text-decoration: underline; }
+
+        /* ── Chart Section ─────────────── */
+        .chart-section {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl); padding: 20px; width: 100%;
+            box-shadow: var(--shadow-md); margin-bottom: 24px;
+        }
+        .chart-controls { display: flex; justify-content: center; margin-bottom: 16px; }
+        .chart-controls select {
+            padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-subtle);
+            background: var(--bg-secondary); color: var(--text-primary); font-family: var(--font-body);
+            font-size: 14px; outline: none; cursor: pointer;
+        }
+        .chart-caption { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 10px; }
+
+        /* ── Back Button ───────────────── */
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
+            background: var(--accent); color: #fff; border-radius: 50px; font-weight: 600;
+            text-decoration: none; font-size: 15px; transition: all var(--transition-fast);
+            box-shadow: var(--shadow-md); border: none; cursor: pointer; font-family: var(--font-body);
+        }
+        .back-btn:hover { background: var(--accent-warm); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+        /* ── Isotopes detail ───────────── */
+        .isotopes-details { display: none; margin-top: 8px; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 8px; }
+        .isotopes-details table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .isotopes-details th { background: var(--accent-soft); color: var(--text-primary); }
+        .isotopes-details td { padding: 4px; border-color: var(--border-subtle); }
+
+        /* ── Responsive ────────────────── */
+        @media (max-width: 1100px) {
+            .container { margin-top: 85px; }
+            .navbar { padding: 10px 16px; gap: 8px; }
+            .brand { font-size: 16px; }
+            .brand-icon { width: 30px; height: 30px; font-size: 14px; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 12px; }
+            .selection-panel { padding: 16px; }
+            .comparison-table th, .comparison-table td { font-size: 12px; padding: 8px 6px; }
+        }
+        @media (max-width: 600px) {
+            .container { margin-top: 75px; }
+            .page-title { font-size: 28px; }
+            .subtitle { font-size: 12px; }
+            .navbar { padding: 8px 10px; gap: 4px; }
+            .brand { font-size: 14px; gap: 4px; }
+            .brand-icon { width: 26px; height: 26px; font-size: 12px; border-radius: 6px; }
+            .hamburger, .theme-toggle { width: 30px; height: 30px; font-size: 14px; }
+            .comparison-table th, .comparison-table td { font-size: 11px; padding: 6px 4px; }
+            .comparison-table-wrap { border-radius: var(--radius-md); }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navbar ────────────────────── -->
+    <nav class="navbar" id="navbar">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true"><i class="fas fa-atom"></i></div>
+            <span>Elementa</span>
+        </div>
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Switch theme" title="Switch light/dark mode"><i class="fas fa-moon"></i></button>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- ── Side Overlay ──────────────── -->
+    <div class="side-overlay" id="sideOverlay"></div>
+
+    <!-- ── Side Menu ─────────────────── -->
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <span>Menu</span>
+            <button class="close-btn" id="closeMenuBtn" aria-label="Close menu"><i class="fas fa-times"></i></button>
+        </div>
+        <ul class="menu-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="home.html"><i class="fas fa-table"></i> Periodic Table</a></li>
+            <li><a href="compare.html"><i class="fas fa-balance-scale"></i> Compare Elements</a></li>
+            <li><a href="chemical-nature.html"><i class="fas fa-flask"></i> Chemical Nature</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- ── Main Content ──────────────── -->
+    <div class="container">
+        <h1 class="page-title">Compare Elements</h1>
+        <p class="subtitle">Select up to four elements to analyze their properties side by side</p>
+
+        <!-- Selection panel -->
+        <div class="selection-panel">
+            <div class="mode-toggle-row">
+                <button class="toggle-mode" id="toggle-mode" aria-label="Switch to dropdown selection">Use Dropdowns</button>
+            </div>
+            <div id="search-mode" style="display: block;">
+                <div class="search-box-wrap">
+                    <input type="text" id="element-search" placeholder="Search elements by name or symbol..." aria-label="Search for elements to compare">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div id="search-results"></div>
+            </div>
+            <div id="dropdown-mode" style="display: none;">
+                <div class="dropdown-wrap">
+                    <select id="element1" aria-label="Select first element"><option value="">Select Element 1</option></select>
+                    <select id="element2" aria-label="Select second element"><option value="">Select Element 2</option></select>
+                    <select id="element3" aria-label="Select third element"><option value="">Select Element 3</option></select>
+                    <select id="element4" aria-label="Select fourth element"><option value="">Select Element 4</option></select>
+                </div>
+            </div>
+            <div id="selected-elements" class="selected-elements">
+                <span id="selected-element1" class="selected-element"></span>
+                <span id="selected-element2" class="selected-element"></span>
+                <span id="selected-element3" class="selected-element"></span>
+                <span id="selected-element4" class="selected-element"></span>
+            </div>
+        </div>
+
+        <!-- Property selector -->
+        <div class="property-selector" id="property-selector">
+            <h3>Select Properties to Compare</h3>
+            <label><input type="checkbox" value="atomicNumber" checked> Atomic Number</label>
+            <label><input type="checkbox" value="atomicMass" checked> Atomic Mass</label>
+            <label><input type="checkbox" value="group" checked> Group</label>
+            <label><input type="checkbox" value="period" checked> Period</label>
+            <label><input type="checkbox" value="atomicRadius" checked> Atomic Radius</label>
+            <label><input type="checkbox" value="electronegativity" checked> Electronegativity</label>
+            <label><input type="checkbox" value="ionizationEnergy" checked> Ionization Energy</label>
+            <label><input type="checkbox" value="meltingPoint" checked> Melting Point</label>
+            <label><input type="checkbox" value="isotopes" checked> Isotopes</label>
+        </div>
+
+        <!-- Comparison table -->
+        <div class="comparison-table-wrap">
+            <table class="comparison-table" id="comparison-table" aria-describedby="comparison-caption">
+                <caption id="comparison-caption" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Comparison of selected element properties</caption>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th id="element1-name"></th>
+                        <th id="element2-name"></th>
+                        <th id="element3-name"></th>
+                        <th id="element4-name"></th>
+                    </tr>
+                </thead>
+                <tbody id="comparison-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Chart section -->
+        <div class="chart-section">
+            <h3 style="text-align:center; margin-bottom:12px;">Property Comparison Chart</h3>
+            <div class="chart-controls">
+                <select id="chart-property" aria-label="Select property to compare">
+                    <option value="atomicRadius">Atomic Radius (pm)</option>
+                    <option value="electronegativity">Electronegativity</option>
+                    <option value="ionizationEnergy">Ionization Energy (eV)</option>
+                    <option value="meltingPoint">Melting Point (°C)</option>
+                </select>
+            </div>
+            <canvas id="comparison-chart" aria-label="Bar chart comparing selected property" style="max-height:400px;"></canvas>
+            <p class="chart-caption" id="chart-caption">Select at least two elements to compare.</p>
+        </div>
+
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Periodic Table</a>
+    </div>
+
+    <script>
+        // Register Chart.js annotation plugin if available
+        if (typeof Chart !== 'undefined' && typeof ChartAnnotation !== 'undefined') {
+            Chart.register(ChartAnnotation);
+        }
+
+        let atomsData = {};
+        let isotopesData = {};
+        let selectedElements = [];
+        let selectionMode = 'search';
+
+        const fallbackAtoms = {
+            'H': { name: 'Hydrogen', atomicNumber: 1, atomicMass: 1.008, group: 'Nonmetal', period: 1, atomicRadius: 25, electronegativity: 2.20, ionizationEnergy: 13.598, meltingPoint: -259.14 },
+            'He': { name: 'Helium', atomicNumber: 2, atomicMass: 4.002, group: 'Noble Gas', period: 1, atomicRadius: 31, electronegativity: null, ionizationEnergy: 24.587, meltingPoint: -272.20 }
+        };
+        const fallbackIsotopes = {
+            'H': [{ mass: '1.0078', abundance: '99.98%', halfLife: 'Stable' }],
+            'He': [{ mass: '4.0026', abundance: '99.9999%', halfLife: 'Stable' }]
+        };
+
+        function debounce(fn, delay) { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); }; }
+
+        // Theme handling
+        function initTheme() {
+            const theme = localStorage.getItem('elem-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            const icon = document.querySelector('#themeToggle i');
+            if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('elem-theme', next);
+            const icon = document.querySelector('#themeToggle i');
+            if (icon) icon.className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Navbar scroll hide
+        let lastScrollY = window.pageYOffset;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const current = window.pageYOffset;
+            if (current > lastScrollY && current > 60) navbar.classList.add('hidden');
+            else navbar.classList.remove('hidden');
+            lastScrollY = current;
+        }, { passive: true });
+
+        // Side menu
+        const sideMenu = document.getElementById('sideMenu');
+        const sideOverlay = document.getElementById('sideOverlay');
+        function openMenu() { sideMenu.classList.add('open'); sideOverlay.classList.add('open'); }
+        function closeMenu() { sideMenu.classList.remove('open'); sideOverlay.classList.remove('open'); }
+        document.getElementById('hamburgerBtn').addEventListener('click', openMenu);
+        document.getElementById('closeMenuBtn').addEventListener('click', closeMenu);
+        sideOverlay.addEventListener('click', closeMenu);
+        document.querySelectorAll('.menu-list a').forEach(link => link.addEventListener('click', closeMenu));
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // Initialize theme
+        initTheme();
+
+        // Selection mode toggle
+        function toggleSelectionMode() {
+            selectedElements = [];
+            updateSelectedElements();
+            selectionMode = selectionMode === 'search' ? 'dropdown' : 'search';
+            document.getElementById('search-mode').style.display = selectionMode === 'search' ? 'block' : 'none';
+            document.getElementById('dropdown-mode').style.display = selectionMode === 'dropdown' ? 'block' : 'none';
+            document.getElementById('toggle-mode').textContent = selectionMode === 'search' ? 'Use Dropdowns' : 'Use Search Bar';
+            document.getElementById('element-search').value = '';
+            document.getElementById('search-results').innerHTML = '';
+            if (selectionMode === 'dropdown') populateDropdowns();
+            handleSelectionChange();
+        }
+        document.getElementById('toggle-mode').addEventListener('click', toggleSelectionMode);
+
+        function populateDropdowns() {
+            const dropdowns = ['element1','element2','element3','element4'].map(id => document.getElementById(id));
+            dropdowns.forEach((dropdown, idx) => {
+                const currentValue = dropdown.value;
+                dropdown.innerHTML = '<option value="">Select Element</option>';
+                Object.keys(atomsData).sort((a,b) => (atomsData[a]?.atomicNumber||0)-(atomsData[b]?.atomicNumber||0)).forEach(sym => {
+                    if (!selectedElements.includes(sym) || selectedElements[idx] === sym) {
+                        const opt = document.createElement('option');
+                        opt.value = sym;
+                        opt.textContent = `${atomsData[sym]?.name||sym} (${sym})`;
+                        dropdown.appendChild(opt);
+                    }
+                });
+                dropdown.value = selectedElements[idx] || '';
+                dropdown.dataset.prevValue = dropdown.value;
+            });
+        }
+
+        function updateSearchResults(query) {
+            const resDiv = document.getElementById('search-results');
+            resDiv.innerHTML = '';
+            if (query.length < 1) return;
+            const filtered = Object.keys(atomsData).filter(sym =>
+                atomsData[sym]?.name?.toLowerCase().includes(query.toLowerCase()) || sym.toLowerCase().includes(query.toLowerCase())
+            ).sort((a,b) => (atomsData[a]?.atomicNumber||0)-(atomsData[b]?.atomicNumber||0));
+            if (!filtered.length) { resDiv.innerHTML = '<p style="font-size:12px;color:var(--text-muted);">No matching elements.</p>'; return; }
+            filtered.forEach(sym => {
+                if (selectedElements.includes(sym)) return;
+                const btn = document.createElement('button');
+                btn.textContent = `${atomsData[sym]?.name||sym} (${sym})`;
+                btn.onclick = () => addElement(sym);
+                resDiv.appendChild(btn);
+            });
+        }
+
+        document.getElementById('element-search').addEventListener('input', debounce(e => {
+            if (selectionMode === 'search') updateSearchResults(e.target.value);
+        }, 300));
+
+        function addElement(symbol) {
+            if (selectedElements.length >= 4 || selectedElements.includes(symbol) || !atomsData[symbol]) return;
+            selectedElements.push(symbol);
+            updateSelectedElements();
+            if (selectionMode === 'dropdown') populateDropdowns();
+            handleSelectionChange();
+        }
+
+        function removeElement(symbol) {
+            selectedElements = selectedElements.filter(s => s !== symbol);
+            updateSelectedElements();
+            if (selectionMode === 'dropdown') populateDropdowns();
+            handleSelectionChange();
+        }
+
+        function updateSelectedElements() {
+            for (let i = 0; i < 4; i++) {
+                const div = document.getElementById(`selected-element${i+1}`);
+                div.innerHTML = '';
+                if (selectedElements[i]) {
+                    const sym = selectedElements[i];
+                    div.innerHTML = `${atomsData[sym]?.name||sym} (${sym}) <span class="remove-btn" onclick="removeElement('${sym}')" aria-label="Remove ${atomsData[sym]?.name||sym}">&times;</span>`;
+                }
+            }
+        }
+
+        // Dropdown change handlers
+        ['element1','element2','element3','element4'].forEach((id, idx) => {
+            const dropdown = document.getElementById(id);
+            dropdown.addEventListener('change', function() {
+                if (selectionMode !== 'dropdown') return;
+                const prev = this.dataset.prevValue;
+                if (prev && prev !== this.value) {
+                    selectedElements = selectedElements.filter(s => s !== prev);
+                }
+                if (this.value) {
+                    addElement(this.value);
+                    this.dataset.prevValue = this.value;
+                } else {
+                    if (prev) {
+                        selectedElements = selectedElements.filter(s => s !== prev);
+                        updateSelectedElements();
+                        populateDropdowns();
+                        handleSelectionChange();
+                        this.dataset.prevValue = '';
+                    }
+                }
+            });
+        });
+
+        function renderComparisonTable() {
+            const tbody = document.getElementById('comparison-body');
+            tbody.innerHTML = '';
+            const table = document.getElementById('comparison-table');
+            if (selectedElements.length < 2) {
+                table.style.display = 'none';
+                document.getElementById('chart-caption').textContent = 'Select at least two elements to compare.';
+                return;
+            }
+            table.style.display = 'table';
+            const allProps = [
+                { key: 'atomicNumber', label: 'Atomic Number', tooltip: 'Number of protons in the nucleus.' },
+                { key: 'atomicMass', label: 'Atomic Mass', tooltip: 'Average mass of the atom (amu).' },
+                { key: 'group', label: 'Group', tooltip: 'Column in the periodic table.' },
+                { key: 'period', label: 'Period', tooltip: 'Row in the periodic table.' },
+                { key: 'atomicRadius', label: 'Atomic Radius (pm)', tooltip: 'Size of the atom in picometers.' },
+                { key: 'electronegativity', label: 'Electronegativity', tooltip: 'Ability to attract electrons.' },
+                { key: 'ionizationEnergy', label: 'Ionization Energy (eV)', tooltip: 'Energy to remove an electron.' },
+                { key: 'meltingPoint', label: 'Melting Point (°C)', tooltip: 'Temperature at which the element melts.' },
+                { key: 'isotopes', label: 'Isotopes', tooltip: 'Click to view isotope details.' }
+            ];
+            const selectedProps = Array.from(document.querySelectorAll('.property-selector input:checked')).map(i => i.value);
+            const props = allProps.filter(p => selectedProps.includes(p.key));
+            if (!props.length) {
+                tbody.innerHTML = '<tr><td colspan="5">No properties selected.</td></tr>';
+                return;
+            }
+            props.forEach(prop => {
+                const row = document.createElement('tr');
+                let cells = `<td class="tooltip"><span class="tooltip-text">${prop.tooltip}</span>${prop.label}</td>`;
+                selectedElements.forEach(sym => {
+                    if (prop.key === 'isotopes') {
+                        const count = isotopesData[sym]?.length || 0;
+                        cells += `<td><a href="#" onclick="showIsotopes('${sym}', this); return false;">${count} isotopes</a><div class="isotopes-details" id="isotopes-${sym}"></div></td>`;
+                    } else {
+                        cells += `<td>${atomsData[sym]?.[prop.key] ?? 'N/A'}</td>`;
+                    }
+                });
+                row.innerHTML = cells;
+                tbody.appendChild(row);
+            });
+            ['element1-name','element2-name','element3-name','element4-name'].forEach((id, idx) => {
+                document.getElementById(id).textContent = selectedElements[idx] ? atomsData[selectedElements[idx]]?.name || selectedElements[idx] : '';
+            });
+        }
+
+        function showIsotopes(sym, linkEl) {
+            const detailsDiv = document.getElementById(`isotopes-${sym}`);
+            if (detailsDiv.style.display === 'block') {
+                detailsDiv.style.display = 'none';
+                linkEl.textContent = `${isotopesData[sym]?.length||0} isotopes`;
+                return;
+            }
+            const isotopes = isotopesData[sym] || [{ mass: 'N/A', abundance: 'N/A', halfLife: 'N/A' }];
+            let html = '<table><thead><tr><th>Mass</th><th>Abundance</th><th>Half-Life</th></tr></thead><tbody>';
+            isotopes.forEach(iso => {
+                html += `<tr><td>${iso.mass||'N/A'}</td><td>${iso.abundance||'N/A'}</td><td>${iso.halfLife||'N/A'}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            detailsDiv.innerHTML = html;
+            detailsDiv.style.display = 'block';
+            linkEl.textContent = 'Hide isotopes';
+        }
+
+        let chartInstance = null;
+        function renderChart(property = 'atomicRadius') {
+            const ctx = document.getElementById('comparison-chart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            if (selectedElements.length < 2) return;
+            const labels = selectedElements.map(sym => atomsData[sym]?.name || sym);
+            const data = selectedElements.map(sym => {
+                const val = atomsData[sym]?.[property];
+                return (val !== null && !isNaN(val)) ? parseFloat(val) : 0;
+            });
+            const samePeriod = selectedElements.every(s => atomsData[s]?.period === atomsData[selectedElements[0]]?.period);
+            const annotations = (samePeriod && property === 'atomicRadius') ? {
+                annotations: {
+                    trendLine: {
+                        type: 'line',
+                        xMin: 0, xMax: labels.length-1,
+                        yMin: Math.min(...data), yMax: Math.max(...data),
+                        borderColor: 'rgba(255,255,255,0.3)',
+                        borderWidth: 1,
+                        borderDash: [5,5],
+                        label: { content: 'Radius decreases →', display: true, position: 'end' }
+                    }
+                }
+            } : {};
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: property === 'atomicRadius' ? 'Atomic Radius (pm)' :
+                               property === 'electronegativity' ? 'Electronegativity' :
+                               property === 'ionizationEnergy' ? 'Ionization Energy (eV)' : 'Melting Point (°C)',
+                        data,
+                        backgroundColor: 'var(--chart-bar)',
+                        borderColor: 'var(--chart-bar-hover)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { ticks: { color: 'var(--text-primary)' }, grid: { color: 'var(--chart-grid)' } },
+                        y: { beginAtZero: true, title: { display: true, text: property === 'atomicRadius' ? 'pm' : property === 'electronegativity' ? '' : property === 'ionizationEnergy' ? 'eV' : '°C', color: 'var(--text-primary)' }, ticks: { color: 'var(--text-primary)' }, grid: { color: 'var(--chart-grid)' } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: true },
+                        annotation: annotations
+                    }
+                }
+            });
+            const captions = {
+                atomicRadius: samePeriod ? 'Atomic radius decreases across a period due to increased nuclear charge.' : 'Atomic radius varies based on nuclear charge and electron shells.',
+                electronegativity: 'Electronegativity measures an atom’s ability to attract electrons.',
+                ionizationEnergy: 'Ionization energy is the energy required to remove an electron.',
+                meltingPoint: 'Melting point indicates the temperature at which the element transitions to liquid.'
+            };
+            document.getElementById('chart-caption').textContent = captions[property] || '';
+        }
+
+        function handleSelectionChange() {
+            renderComparisonTable();
+            renderChart(document.getElementById('chart-property').value);
+        }
+
+        document.getElementById('chart-property').addEventListener('change', debounce(() => {
+            renderChart(document.getElementById('chart-property').value);
+        }, 200));
+        document.querySelectorAll('.property-selector input').forEach(inp => {
+            inp.addEventListener('change', debounce(handleSelectionChange, 200));
+        });
+
+        async function init() {
+            try {
+                const [atomsResp, isoResp] = await Promise.all([
+                    fetch('atoms.json').then(r => r.ok ? r.json() : fallbackAtoms),
+                    fetch('isotopes-data.json').then(r => r.ok ? r.json() : fallbackIsotopes)
+                ]);
+                atomsData = atomsResp || fallbackAtoms;
+                isotopesData = Array.isArray(isoResp) ? isoResp.reduce((acc, item) => { acc[item.symbol] = item.isotopes || []; return acc; }, {}) : isoResp || fallbackIsotopes;
+                if (selectionMode === 'dropdown') populateDropdowns();
+                const preselected = sessionStorage.getItem('compareElement');
+                if (preselected && atomsData[preselected]) {
+                    addElement(preselected);
+                    if (selectionMode === 'dropdown') {
+                        document.getElementById('element1').value = preselected;
+                        document.getElementById('element1').dataset.prevValue = preselected;
+                    }
+                }
+            } catch (e) {
+                document.querySelector('.container').innerHTML = `<div style="color:var(--danger); text-align:center;"><h2>Error loading data</h2><p>${e.message}</p></div>`;
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
