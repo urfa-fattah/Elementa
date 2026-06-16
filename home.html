@@ -10,14 +10,7 @@
     <link rel="icon" href="atom-icon-192x192.png" sizes="192x192" type="image/png">
     <link rel="icon" href="atom-icon-512x512.png" sizes="512x512" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js">
-    </script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
-    </script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js">
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <style>
         :root {
@@ -1462,12 +1455,304 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <!-- ── Navbar ──────────────── -->
+    <nav class="navbar" id="navbar">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <i class="fas fa-atom"></i>
+            </div>
+            <span>Elementa</span>
+        </div>
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input
+                    type="search"
+                    id="search-input"
+                    placeholder="Search elements..."
+                    aria-label="Search elements"
+                />
+                <button
+                    class="search-clear"
+                    id="search-clear-btn"
+                    aria-label="Clear search"
+                    tabindex="-1"
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <button
+                class="theme-toggle"
+                id="theme-toggle-btn"
+                aria-label="Toggle light/dark theme"
+            >
+                <i class="fas" id="theme-icon"></i>
+            </button>
+            <button
+                class="hamburger"
+                id="menu-open-btn"
+                aria-label="Open menu"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef, useCallback, useMemo } = React;
+    <!-- ── Side Overlay ────────── -->
+    <div class="side-overlay" id="side-overlay"></div>
 
-        // ── Filter Mapping ─────────────────
+    <!-- ── Side Menu ───────────── -->
+    <div class="side-menu" id="side-menu">
+        <div class="side-menu-header">
+            <span>Menu</span>
+            <button class="close-btn" id="menu-close-btn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="menu-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="home.html"><i class="fas fa-table"></i> Periodic Table</a></li>
+            <li>
+                <button
+                    class="dropdown-toggle"
+                    id="dropdown-toggle-btn"
+                >
+                    <i class="fas fa-list"></i> Elements List
+                    <i class="fas fa-chevron-down chevron"></i>
+                </button>
+                <ul class="dropdown-content" id="dropdown-content">
+                    <!-- Dropdown Items Populated Dynamically -->
+                </ul>
+            </li>
+            <li><a href="compare.html"><i class="fas fa-balance-scale"></i> Compare Elements</a></li>
+            <li><a href="chemical-nature.html"><i class="fas fa-flask"></i> Chemical Nature</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- ── Main Content ────────── -->
+    <div class="container">
+        <h1 class="page-title">Elementa</h1>
+        <p class="page-subtitle">Interactive Periodic Table</p>
+
+        <div class="filter-row">
+            <span id="filter-indicator">
+                <i class="fas fa-layer-group" style="margin-right: 6px; color: var(--accent);"></i>
+                <span id="filter-text">All Elements (118)</span>
+            </span>
+            <button
+                class="filter-badge"
+                id="filter-clear-badge"
+                style="display: none; cursor: pointer; border: none; font-family: var(--font-body);"
+                title="Clear filter"
+            >
+                ✕ Clear
+            </button>
+        </div>
+
+        <!-- ── Legend Chips (Interactive Category Legend) ── -->
+        <div class="legend-chips" id="legend-chips">
+            <!-- Populated dynamically -->
+        </div>
+
+        <!-- ── Table ──────────────── -->
+        <div class="table-wrapper" id="table-wrapper">
+            <div class="scroll-shadow-left" id="scroll-shadow-left"></div>
+            <div class="scroll-shadow-right" id="scroll-shadow-right"></div>
+            <table>
+                <tbody id="table-body">
+                    <!-- Table content generated dynamically by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ── Quick-View Modal ── -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-card" role="dialog" aria-modal="true" id="modal-card">
+            <button class="modal-close" id="modal-close-btn" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-symbol" id="modal-symbol">H</div>
+            <div class="modal-name" id="modal-name">Hydrogen</div>
+            <span class="modal-category-badge" id="modal-badge">Alkali Metals</span>
+            <div class="modal-info-row">
+                <div class="modal-info-item">
+                    <strong id="modal-num">1</strong> Atomic Number
+                </div>
+                <div class="modal-info-item">
+                    <strong id="modal-mass">1</strong> Atomic Mass
+                </div>
+            </div>
+            <div style="margin-top: 10px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;">
+                <button class="modal-btn" id="modal-details-btn">
+                    <i class="fas fa-external-link-alt"></i> Full Details
+                </button>
+                <button class="modal-btn modal-btn-secondary" id="modal-cancel-btn">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Footer ──────────────── -->
+    <footer>
+        <span>Data sourced from IUPAC · Atomic masses rounded for simplicity; synthetic elements in brackets [ ].</span>
+        <span>
+            <a href="https://modern-periodic-table.netlify.app" rel="cc:attributionURL">
+                Elementa <i class="fas fa-atom"></i> Periodic Table
+            </a> by 
+            <a href="https://rifatuzzaman-rifat.github.io/rifats" rel="cc:attributionURL dct:creator">
+                Rifatuzzaman & Urfa Hasan Fattah
+            </a> is licensed under 
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer">
+                CC BY-NC-SA 4.0
+                <span class="cc-icons">
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="CC" />
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="BY" />
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="NC" />
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt="SA" />
+                </span>
+            </a>
+        </span>
+    </footer>
+
+    <!-- ── Javascript Implementation ──────────────── -->
+    <script>
+        // Elements raw database conforming to layout structure
+        const elementsData = [
+            { n: 1, m: "1", s: "H", nm: "Hydrogen", c: "alkali-metal", row: 1, col: 1 },
+            { n: 2, m: "4", s: "He", nm: "Helium", c: "noble-gas", row: 1, col: 18 },
+
+            { n: 3, m: "7", s: "Li", nm: "Lithium", c: "alkali-metal", row: 2, col: 1 },
+            { n: 4, m: "9", s: "Be", nm: "Beryllium", c: "alkaline-earth", row: 2, col: 2 },
+            { n: 5, m: "11", s: "B", nm: "Boron", c: "metalloid", row: 2, col: 13 },
+            { n: 6, m: "12", s: "C", nm: "Carbon", c: "nonmetal", row: 2, col: 14 },
+            { n: 7, m: "14", s: "N", nm: "Nitrogen", c: "nonmetal", row: 2, col: 15 },
+            { n: 8, m: "16", s: "O", nm: "Oxygen", c: "nonmetal", row: 2, col: 16 },
+            { n: 9, m: "19", s: "F", nm: "Fluorine", c: "nonmetal", row: 2, col: 17 },
+            { n: 10, m: "20", s: "Ne", nm: "Neon", c: "noble-gas", row: 2, col: 18 },
+
+            { n: 11, m: "23", s: "Na", nm: "Sodium", c: "alkali-metal", row: 3, col: 1 },
+            { n: 12, m: "24", s: "Mg", nm: "Magnesium", c: "alkaline-earth", row: 3, col: 2 },
+            { n: 13, m: "27", s: "Al", nm: "Aluminum", c: "post-transition", row: 3, col: 13 },
+            { n: 14, m: "28", s: "Si", nm: "Silicon", c: "metalloid", row: 3, col: 14 },
+            { n: 15, m: "31", s: "P", nm: "Phosphorus", c: "nonmetal", row: 3, col: 15 },
+            { n: 16, m: "32", s: "S", nm: "Sulfur", c: "nonmetal", row: 3, col: 16 },
+            { n: 17, m: "36", s: "Cl", nm: "Chlorine", c: "nonmetal", row: 3, col: 17 },
+            { n: 18, m: "40", s: "Ar", nm: "Argon", c: "noble-gas", row: 3, col: 18 },
+
+            { n: 19, m: "39", s: "K", nm: "Potassium", c: "alkali-metal", row: 4, col: 1 },
+            { n: 20, m: "40", s: "Ca", nm: "Calcium", c: "alkaline-earth", row: 4, col: 2 },
+            { n: 21, m: "45", s: "Sc", nm: "Scandium", c: "transition-metal", row: 4, col: 3 },
+            { n: 22, m: "48", s: "Ti", nm: "Titanium", c: "transition-metal", row: 4, col: 4 },
+            { n: 23, m: "51", s: "V", nm: "Vanadium", c: "transition-metal", row: 4, col: 5 },
+            { n: 24, m: "52", s: "Cr", nm: "Chromium", c: "transition-metal", row: 4, col: 6 },
+            { n: 25, m: "55", s: "Mn", nm: "Manganese", c: "transition-metal", row: 4, col: 7 },
+            { n: 26, m: "56", s: "Fe", nm: "Iron", c: "transition-metal", row: 4, col: 8 },
+            { n: 27, m: "59", s: "Co", nm: "Cobalt", c: "transition-metal", row: 4, col: 9 },
+            { n: 28, m: "59", s: "Ni", nm: "Nickel", c: "transition-metal", row: 4, col: 10 },
+            { n: 29, m: "64", s: "Cu", nm: "Copper", c: "transition-metal", row: 4, col: 11 },
+            { n: 30, m: "65", s: "Zn", nm: "Zinc", c: "transition-metal", row: 4, col: 12 },
+            { n: 31, m: "70", s: "Ga", nm: "Gallium", c: "post-transition", row: 4, col: 13 },
+            { n: 32, m: "73", s: "Ge", nm: "Germanium", c: "metalloid", row: 4, col: 14 },
+            { n: 33, m: "75", s: "As", nm: "Arsenic", c: "metalloid", row: 4, col: 15 },
+            { n: 34, m: "79", s: "Se", nm: "Selenium", c: "nonmetal", row: 4, col: 16 },
+            { n: 35, m: "80", s: "Br", nm: "Bromine", c: "nonmetal", row: 4, col: 17 },
+            { n: 36, m: "84", s: "Kr", nm: "Krypton", c: "noble-gas", row: 4, col: 18 },
+
+            { n: 37, m: "85", s: "Rb", nm: "Rubidium", c: "alkali-metal", row: 5, col: 1 },
+            { n: 38, m: "88", s: "Sr", nm: "Strontium", c: "alkaline-earth", row: 5, col: 2 },
+            { n: 39, m: "89", s: "Y", nm: "Yttrium", c: "transition-metal", row: 5, col: 3 },
+            { n: 40, m: "91", s: "Zr", nm: "Zirconium", c: "transition-metal", row: 5, col: 4 },
+            { n: 41, m: "93", s: "Nb", nm: "Niobium", c: "transition-metal", row: 5, col: 5 },
+            { n: 42, m: "96", s: "Mo", nm: "Molybdenum", c: "transition-metal", row: 5, col: 6 },
+            { n: 43, m: "98", s: "Tc", nm: "Technetium", c: "transition-metal", row: 5, col: 7 },
+            { n: 44, m: "101", s: "Ru", nm: "Ruthenium", c: "transition-metal", row: 5, col: 8 },
+            { n: 45, m: "103", s: "Rh" ,nm: "Rhodium", c: "transition-metal", row: 5, col: 9 },
+            { n: 46, m: "106", s: "Pd", nm: "Palladium", c: "transition-metal", row: 5, col: 10 },
+            { n: 47, m: "108", s: "Ag", nm: "Silver", c: "transition-metal", row: 5, col: 11 },
+            { n: 48, m: "112", s: "Cd", nm: "Cadmium", c: "transition-metal", row: 5, col: 12 },
+            { n: 49, m: "115", s: "In", nm: "Indium", c: "post-transition", row: 5, col: 13 },
+            { n: 50, m: "119", s: "Sn", nm: "Tin", c: "post-transition", row: 5, col: 14 },
+            { n: 51, m: "122", s: "Sb", nm: "Antimony", c: "metalloid", row: 5, col: 15 },
+            { n: 52, m: "128", s: "Te", nm: "Tellurium", c: "nonmetal", row: 5, col: 16 },
+            { n: 53, m: "127", s: "I", nm: "Iodine", c: "nonmetal", row: 5, col: 17 },
+            { n: 54, m: "131", s: "Xe", nm: "Xenon", c: "noble-gas", row: 5, col: 18 },
+
+            { n: 55, m: "133", s: "Cs", nm: "Cesium", c: "alkali-metal", row: 6, col: 1 },
+            { n: 56, m: "137", s: "Ba", nm: "Barium", c: "alkaline-earth", row: 6, col: 2 },
+            { n: 72, m: "178", s: "Hf", nm: "Hafnium", c: "transition-metal", row: 6, col: 4 },
+            { n: 73, m: "181", s: "Ta", nm: "Tantalum", c: "transition-metal", row: 6, col: 5 },
+            { n: 74, m: "184", s: "W", nm: "Tungsten", c: "transition-metal", row: 6, col: 6 },
+            { n: 75, m: "186", s: "Re", nm: "Rhenium", c: "transition-metal", row: 6, col: 7 },
+            { n: 76, m: "190", s: "Os", nm: "Osmium", c: "transition-metal", row: 6, col: 8 },
+            { n: 77, m: "192", s: "Ir", nm: "Iridium", c: "transition-metal", row: 6, col: 9 },
+            { n: 78, m: "195", s: "Pt", nm: "Platinum", c: "transition-metal", row: 6, col: 10 },
+            { n: 79, m: "197", s: "Au", nm: "Gold", c: "transition-metal", row: 6, col: 11 },
+            { n: 80, m: "201", s: "Hg", nm: "Mercury", c: "transition-metal", row: 6, col: 12 },
+            { n: 81, m: "204", s: "Tl", nm: "Thallium", c: "post-transition", row: 6, col: 13 },
+            { n: 82, m: "207", s: "Pb", nm: "Lead", c: "post-transition", row: 6, col: 14 },
+            { n: 83, m: "209", s: "Bi", nm: "Bismuth", c: "post-transition", row: 6, col: 15 },
+            { n: 84, m: "209", s: "Po", nm: "Polonium", c: "metalloid", row: 6, col: 16 },
+            { n: 85, m: "210", s: "At", nm: "Astatine", c: "nonmetal", row: 6, col: 17 },
+            { n: 86, m: "222", s: "Rn", nm: "Radon", c: "noble-gas", row: 6, col: 18 },
+
+            { n: 87, m: "223", s: "Fr", nm: "Francium", c: "alkali-metal", row: 7, col: 1 },
+            { n: 88, m: "226", s: "Ra", nm: "Radium", c: "alkaline-earth", row: 7, col: 2 },
+            { n: 104, m: "[267]", s: "Rf", nm: "Rutherfordium", c: "transition-metal", row: 7, col: 4 },
+            { n: 105, m: "[268]", s: "Db", nm: "Dubnium", c: "transition-metal", row: 7, col: 5 },
+            { n: 106, m: "[269]", s: "Sg", nm: "Seaborgium", c: "transition-metal", row: 7, col: 6 },
+            { n: 107, m: "[270]", s: "Bh", nm: "Bohrium", c: "transition-metal", row: 7, col: 7 },
+            { n: 108, m: "[269]", s: "Hs", nm: "Hassium", c: "transition-metal", row: 7, col: 8 },
+            { n: 109, m: "[278]", s: "Mt", nm: "Meitnerium", c: "transition-metal", row: 7, col: 9 },
+            { n: 110, m: "[281]", s: "Ds", nm: "Darmstadtium", c: "transition-metal", row: 7, col: 10 },
+            { n: 111, m: "[281]", s: "Rg", nm: "Roentgenium", c: "transition-metal", row: 7, col: 11 },
+            { n: 112, m: "[285]", s: "Cn", nm: "Copernicium", c: "transition-metal", row: 7, col: 12 },
+            { n: 113, m: "[286]", s: "Nh", nm: "Nihonium", c: "post-transition", row: 7, col: 13 },
+            { n: 114, m: "[289]", s: "Fl", nm: "Flerovium", c: "post-transition", row: 7, col: 14 },
+            { n: 115, m: "[289]", s: "Mc", nm: "Moscovium", c: "post-transition", row: 7, col: 15 },
+            { n: 116, m: "[293]", s: "Lv", nm: "Livermorium", c: "post-transition", row: 7, col: 16 },
+            { n: 117, m: "[294]", s: "Ts", nm: "Tennessine", c: "nonmetal", row: 7, col: 17 },
+            { n: 118, m: "[294]", s: "Og", nm: "Oganesson", c: "noble-gas", row: 7, col: 18 },
+
+            // Lanthanides row: 8, columns 4 to 17 correspond to elements 58-71
+            { n: 58, m: "140", s: "Ce", nm: "Cerium", c: "lanthanide", row: 8, col: 4 },
+            { n: 59, m: "141", s: "Pr", nm: "Praseodymium", c: "lanthanide", row: 8, col: 5 },
+            { n: 60, m: "144", s: "Nd", nm: "Neodymium", c: "lanthanide", row: 8, col: 6 },
+            { n: 61, m: "145", s: "Pm", nm: "Promethium", c: "lanthanide", row: 8, col: 7 },
+            { n: 62, m: "150", s: "Sm", nm: "Samarium", c: "lanthanide", row: 8, col: 8 },
+            { n: 63, m: "152", s: "Eu", nm: "Europium", c: "lanthanide", row: 8, col: 9 },
+            { n: 64, m: "157", s: "Gd", nm: "Gadolinium", c: "lanthanide", row: 8, col: 10 },
+            { n: 65, m: "159", s: "Tb", nm: "Terbium", c: "lanthanide", row: 8, col: 11 },
+            { n: 66, m: "163", s: "Dy", nm: "Dysprosium", c: "lanthanide", row: 8, col: 12 },
+            { n: 67, m: "165", s: "Ho", nm: "Holmium", c: "lanthanide", row: 8, col: 13 },
+            { n: 68, m: "167", s: "Er", nm: "Erbium", c: "lanthanide", row: 8, col: 14 },
+            { n: 69, m: "169", s: "Tm", nm: "Thulium", c: "lanthanide", row: 8, col: 15 },
+            { n: 70, m: "173", s: "Yb", nm: "Ytterbium", c: "lanthanide", row: 8, col: 16 },
+            { n: 71, m: "175", s: "Lu", nm: "Lutetium", c: "lanthanide", row: 8, col: 17 },
+
+            // Actinides row: 9, columns 4 to 17 correspond to elements 90-103
+            { n: 90, m: "232", s: "Th", nm: "Thorium", c: "actinide", row: 9, col: 4 },
+            { n: 91, m: "231", s: "Pa", nm: "Protactinium", c: "actinide", row: 9, col: 5 },
+            { n: 92, m: "238", s: "U", nm: "Uranium", c: "actinide", row: 9, col: 6 },
+            { n: 93, m: "237", s: "Np", nm: "Neptunium", c: "actinide", row: 9, col: 7 },
+            { n: 94, m: "244", s: "Pu", nm: "Plutonium", c: "actinide", row: 9, col: 8 },
+            { n: 95, m: "243", s: "Am", nm: "Americium", c: "actinide", row: 9, col: 9 },
+            { n: 96, m: "247", s: "Cm", nm: "Curium", c: "actinide", row: 9, col: 10 },
+            { n: 97, m: "247", s: "Bk", nm: "Berkelium", c: "actinide", row: 9, col: 11 },
+            { n: 98, m: "251", s: "Cf", nm: "Californium", c: "actinide", row: 9, col: 12 },
+            { n: 99, m: "252", s: "Es", nm: "Einsteinium", c: "actinide", row: 9, col: 13 },
+            { n: 100, m: "257", s: "Fm", nm: "Fermium", c: "actinide", row: 9, col: 14 },
+            { n: 101, m: "258", s: "Md", nm: "Mendelevium", c: "actinide", row: 9, col: 15 },
+            { n: 102, m: "259", s: "No", nm: "Nobelium", c: "actinide", row: 9, col: 16 },
+            { n: 103, m: "266", s: "Lr", nm: "Lawrencium", c: "actinide", row: 9, col: 17 }
+        ];
+
+        // Filter map matching original React logic
         const filterMap = {
             'all': 'All Elements (118)',
             'gas': 'Gases (11)',
@@ -1495,7 +1780,57 @@
             'multi-oxidation': 'Elements with Multiple Oxidation States (7)'
         };
 
-        const checkMatch = (n, category, filterCategory) => {
+        const categoryMeta = [
+            { key: 'alkali-metal', label: 'Alkali Metals', color: '#d4786e', dotColor: '#e8a090' },
+            { key: 'alkaline-earth', label: 'Alkaline Earth', color: '#d4a870', dotColor: '#e8c8a0' },
+            { key: 'transition-metal', label: 'Transition Metals', color: '#7a9ab8', dotColor: '#a0c0d8' },
+            { key: 'post-transition', label: 'Post-Transition', color: '#8aac82', dotColor: '#a8c8a0' },
+            { key: 'metalloid', label: 'Metalloids', color: '#9a80b8', dotColor: '#b8a8d0' },
+            { key: 'nonmetal', label: 'Non-Metals', color: '#c4b870', dotColor: '#d8d0a0' },
+            { key: 'noble-gas', label: 'Noble Gases', color: '#7aaeb8', dotColor: '#a0d0d8' },
+            { key: 'lanthanide', label: 'Lanthanides', color: '#c88098', dotColor: '#d8a8b8' },
+            { key: 'actinide', label: 'Actinides', color: '#a878b8', dotColor: '#c8a8d8' },
+        ];
+
+        const dropdownItems = [
+            { key: 'all', i: 'fa-eye', t: 'Show All (118)' },
+            { key: 'gas', i: 'fa-cloud', t: 'Gas (11)' },
+            { key: 'noble-gas', i: 'fa-shield-alt', t: 'Inert — Noble Gases (6)' },
+            { key: 'chalcogen', i: 'fa-atom', t: 'Chalcogens (6)' },
+            { key: 'pnictogen', i: 'fa-atom', t: 'Pnictogens (6)' },
+            { key: 'solid', i: 'fa-cube', t: 'Solid (103)' },
+            { key: 'liquid', i: 'fa-tint', t: 'Liquid (2)' },
+            { key: 'radioactive', i: 'fa-radiation', t: 'Radioactive (38)' },
+            { key: 'metal', i: 'fa-hammer', t: 'Metals (91)' },
+            { key: 'nonmetal', i: 'fa-leaf', t: 'Non-Metals (17)' },
+            { key: 'semiconductor', i: 'fa-microchip', t: 'Semiconductors (7)' },
+            { key: 's-block', i: 'fa-square', t: 's-block (12)' },
+            { key: 'p-block', i: 'fa-square', t: 'p-block (35)' },
+            { key: 'd-block', i: 'fa-square', t: 'd-block (40)' },
+            { key: 'f-block', i: 'fa-square', t: 'f-block (31)' },
+            { key: 'alkali-metal', i: 'fa-burn', t: 'Alkali Metals (6)' },
+            { key: 'alkaline-earth', i: 'fa-mountain', t: 'Alkaline Earth Metals (6)' },
+            { key: 'synthetic', i: 'fa-flask', t: 'Synthetic (26)' },
+            { key: 'reactive', i: 'fa-exclamation-triangle', t: 'Highly Reactive (11)' },
+            { key: 'essential', i: 'fa-dna', t: 'Essential — Biological (10)' },
+            { key: 'magnetic', i: 'fa-magnet', t: 'Magnetic (4)' },
+            { key: 'rare-earth', i: 'fa-gem', t: 'Rare Earth (17)' },
+            { key: 'halogen', i: 'fa-burn', t: 'Halogens (6)' },
+            { key: 'multi-oxidation', i: 'fa-exchange-alt', t: 'Multiple Oxidation States (7)' },
+        ];
+
+        // ── State Management ─────────────────
+        let activeFilter = 'all';
+        let searchQuery = '';
+        let hoveredCategory = null;
+        let selectedElement = null;
+
+        // Theme management setup
+        let currentTheme = localStorage.getItem('elem-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        // State Check Match Function
+        function checkMatch(n, category, filterCategory) {
             switch (filterCategory) {
                 case 'all':
                     return true;
@@ -1514,9 +1849,7 @@
                 case 'radioactive':
                     return [43, 61, 84, 85, 86, 87, 88].includes(n) || n >= 89;
                 case 'metal':
-                    return ['alkali-metal', 'alkaline-earth', 'transition-metal', 'post-transition', 'lanthanide',
-                        'actinide'
-                    ].includes(category);
+                    return ['alkali-metal', 'alkaline-earth', 'transition-metal', 'post-transition', 'lanthanide', 'actinide'].includes(category);
                 case 'nonmetal':
                     return category === 'nonmetal';
                 case 'semiconductor':
@@ -1550,587 +1883,396 @@
                 default:
                     return true;
             }
-        };
+        }
 
-        // ── Category Metadata ─────────────
-        const categoryMeta = [
-            { key: 'alkali-metal', label: 'Alkali Metals', color: '#d4786e', dotColor: '#e8a090' },
-            { key: 'alkaline-earth', label: 'Alkaline Earth', color: '#d4a870', dotColor: '#e8c8a0' },
-            { key: 'transition-metal', label: 'Transition Metals', color: '#7a9ab8', dotColor: '#a0c0d8' },
-            { key: 'post-transition', label: 'Post-Transition', color: '#8aac82', dotColor: '#a8c8a0' },
-            { key: 'metalloid', label: 'Metalloids', color: '#9a80b8', dotColor: '#b8a8d0' },
-            { key: 'nonmetal', label: 'Non-Metals', color: '#c4b870', dotColor: '#d8d0a0' },
-            { key: 'noble-gas', label: 'Noble Gases', color: '#7aaeb8', dotColor: '#a0d0d8' },
-            { key: 'lanthanide', label: 'Lanthanides', color: '#c88098', dotColor: '#d8a8b8' },
-            { key: 'actinide', label: 'Actinides', color: '#a878b8', dotColor: '#c8a8d8' },
-        ];
+        // DOM Initializations
+        const searchInput = document.getElementById('search-input');
+        const searchClearBtn = document.getElementById('search-clear-btn');
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        const themeIcon = document.getElementById('theme-icon');
+        const menuOpenBtn = document.getElementById('menu-open-btn');
+        const menuCloseBtn = document.getElementById('menu-close-btn');
+        const sideMenu = document.getElementById('side-menu');
+        const sideOverlay = document.getElementById('side-overlay');
+        const dropdownToggleBtn = document.getElementById('dropdown-toggle-btn');
+        const dropdownContent = document.getElementById('dropdown-content');
+        const filterText = document.getElementById('filter-text');
+        const filterClearBadge = document.getElementById('filter-clear-badge');
+        const legendChipsContainer = document.getElementById('legend-chips');
+        const tableBody = document.getElementById('table-body');
+        const tableWrapper = document.getElementById('table-wrapper');
+        const shadowLeft = document.getElementById('scroll-shadow-left');
+        const shadowRight = document.getElementById('scroll-shadow-right');
 
-        // ── Element Cell Component ────────
-        const ElementCell = React.memo(({ n, m, s, nm, c, query, activeFilter, hoveredCategory, onCellClick }) => {
-            const q = query.toLowerCase();
-            const matchesQuery = !q || nm.toLowerCase().includes(q) || s.toLowerCase().includes(q) || n.toString() ===
-                q;
-            const matchesFilter = checkMatch(n, c, activeFilter);
-            const isVisible = matchesQuery && matchesFilter;
-            const isHighlighted = hoveredCategory && hoveredCategory === c && isVisible;
+        // Modal elements
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalDetailsBtn = document.getElementById('modal-details-btn');
+        const modalSymbol = document.getElementById('modal-symbol');
+        const modalName = document.getElementById('modal-name');
+        const modalBadge = document.getElementById('modal-badge');
+        const modalNum = document.getElementById('modal-num');
+        const modalMass = document.getElementById('modal-mass');
 
-            const handleClick = useCallback(() => {
-                if (isVisible) onCellClick(n, m, s, nm, c);
-            }, [isVisible, n, m, s, nm, c, onCellClick]);
+        // ── Theme Setter ─────────────────────
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('elem-theme', theme);
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        setTheme(currentTheme);
 
-            return (
-                <td
-                    className={`${c} ${isVisible ? '' : 'faded'} ${isHighlighted ? 'highlighted' : ''}`}
-                    onClick={handleClick}
-                    aria-label={`${nm}, Atomic Number ${n}`}
-                    title={`${nm} (${s}) — Atomic Number ${n}`}
-                    role="button"
-                    tabIndex={isVisible ? 0 : -1}
-                    onKeyDown={(e) => { if (e.key === 'Enter' && isVisible) handleClick(); }}
-                >
-                    <span className="atomic-number">{n}</span>
-                    <span className="atomic-mass">{m}</span>
-                    <span className="symbol">{s}</span>
-                    <span className="name">{nm}</span>
-                </td>
-            );
+        themeToggleBtn.addEventListener('click', () => {
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
         });
-        ElementCell.displayName = 'ElementCell';
 
-        // ── Quick-View Modal ──────────────
-        const QuickViewModal = ({ isOpen, element, onClose, onViewFullDetails }) => {
-            if (!element) return null;
-            const { n, m, s, nm, c } = element;
-            const categoryLabel = categoryMeta.find(cm => cm.key === c)?.label || c;
+        // ── Side Menu controls ─────────────────
+        menuOpenBtn.addEventListener('click', () => {
+            sideMenu.classList.add('open');
+            sideOverlay.classList.add('open');
+        });
 
-            useEffect(() => {
-                const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
-                if (isOpen) document.addEventListener('keydown', handleEsc);
-                return () => document.removeEventListener('keydown', handleEsc);
-            }, [isOpen, onClose]);
+        function closeMenu() {
+            sideMenu.classList.remove('open');
+            sideOverlay.classList.remove('open');
+            dropdownContent.classList.remove('open');
+            dropdownToggleBtn.classList.remove('active');
+        }
 
-            return (
-                <div className={`modal-overlay ${isOpen ? 'open' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-                    <div className="modal-card" role="dialog" aria-modal="true" aria-label={`${nm} quick view`}>
-                        <button className="modal-close" onClick={onClose} aria-label="Close modal">
-                            <i className="fas fa-times"></i>
-                        </button>
-                        <div className="modal-symbol">{s}</div>
-                        <div className="modal-name">{nm}</div>
-                        <span className="modal-category-badge">{categoryLabel}</span>
-                        <div className="modal-info-row">
-                            <div className="modal-info-item">
-                                <strong>{n}</strong> Atomic Number
-                            </div>
-                            <div className="modal-info-item">
-                                <strong>{m}</strong> Atomic Mass
-                            </div>
-                        </div>
-                        <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                            <button className="modal-btn" onClick={() => onViewFullDetails(n)}>
-                                <i className="fas fa-external-link-alt"></i> Full Details
-                            </button>
-                            <button className="modal-btn modal-btn-secondary" onClick={onClose}>
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
+        menuCloseBtn.addEventListener('click', closeMenu);
+        sideOverlay.addEventListener('click', closeMenu);
 
-        // ── Main App ──────────────────────
-        const App = () => {
-            const [query, setQuery] = useState('');
-            const [activeFilter, setActiveFilter] = useState('all');
-            const [isMenuOpen, setIsMenuOpen] = useState(false);
-            const [isNavHidden, setIsNavHidden] = useState(false);
-            const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-            const [theme, setTheme] = useState(() => localStorage.getItem('elem-theme') || 'dark');
-            const [hoveredCategory, setHoveredCategory] = useState(null);
-            const [modalElement, setModalElement] = useState(null);
-            const [isModalOpen, setIsModalOpen] = useState(false);
-            const [scrollShadows, setScrollShadows] = useState({ left: false, right: true });
+        dropdownToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownToggleBtn.classList.toggle('active');
+            dropdownContent.classList.toggle('open');
+        });
 
-            const menuRef = useRef(null);
-            const tableWrapperRef = useRef(null);
+        // ── Populating elements dropdown menu & categories legend ──
+        function renderUI() {
+            // Dropdown items
+            dropdownContent.innerHTML = '';
+            dropdownItems.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.innerHTML = `<i class="fas ${item.i}"></i> ${item.t}`;
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setFilter(item.key);
+                    closeMenu();
+                });
+                li.appendChild(a);
+                dropdownContent.appendChild(li);
+            });
 
-            // ── Theme persistence ──────────
-            useEffect(() => {
-                document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('elem-theme', theme);
-            }, [theme]);
-
-            const toggleTheme = useCallback(() => {
-                setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-            }, []);
-
-            // ── Scroll handlers ────────────
-            useEffect(() => {
-                let lastScrollY = window.pageYOffset;
-                const handleScroll = () => {
-                    const currentScrollY = window.pageYOffset;
-                    setIsNavHidden(currentScrollY > lastScrollY && currentScrollY > 60);
-                    lastScrollY = currentScrollY;
-                };
-                window.addEventListener('scroll', handleScroll, { passive: true });
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-
-            const updateScrollShadows = useCallback(() => {
-                const el = tableWrapperRef.current;
-                if (!el) return;
-                const hasRight = el.scrollWidth > el.clientWidth + el.scrollLeft + 2;
-                const hasLeft = el.scrollLeft > 2;
-                setScrollShadows({ left: hasLeft, right: hasRight });
-            }, []);
-
-            useEffect(() => {
-                const el = tableWrapperRef.current;
-                if (!el) return;
-                updateScrollShadows();
-                el.addEventListener('scroll', updateScrollShadows, { passive: true });
-                window.addEventListener('resize', updateScrollShadows);
-                return () => {
-                    el.removeEventListener('scroll', updateScrollShadows);
-                    window.removeEventListener('resize', updateScrollShadows);
-                };
-            }, [updateScrollShadows]);
-
-            // ── Click outside ──────────────
-            useEffect(() => {
-                const handleClickOutside = (event) => {
-                    if (isMenuOpen && menuRef.current && !menuRef.current.contains(event.target) && !event.target
-                        .closest('.hamburger')) {
-                        setIsMenuOpen(false);
-                        setIsDropdownOpen(false);
-                    }
-                };
-                document.addEventListener('mousedown', handleClickOutside);
-                return () => document.removeEventListener('mousedown', handleClickOutside);
-            }, [isMenuOpen]);
-
-            // ── Element interactions ───────
-            const handleCellClick = useCallback((n, m, s, nm, c) => {
-                setModalElement({ n, m, s, nm, c });
-                setIsModalOpen(true);
-            }, []);
-
-            const handleViewFullDetails = useCallback(async (atomicNumber) => {
-                try {
-                    const response = await fetch('atoms.json');
-                    if (!response.ok) throw new Error('Failed to fetch atom data');
-                    const atomsData = await response.json();
-                    const atom = atomsData[atomicNumber];
-                    if (!atom) {
-                        alert('Details for this element are not available.');
-                        return;
-                    }
-                    sessionStorage.setItem('selectedAtom', JSON.stringify(atom));
-                    window.location.href = 'atom-details.html';
-                } catch (error) {
-                    console.error("Error fetching atom data:", error);
-                    alert('An error occurred while fetching element details. Please ensure you are running on a server.');
+            // Legend chips
+            legendChipsContainer.innerHTML = '';
+            categoryMeta.forEach(cm => {
+                const button = document.createElement('button');
+                button.className = 'legend-chip';
+                if (hoveredCategory === cm.key) {
+                    button.classList.add('active-chip');
                 }
-            }, []);
+                button.innerHTML = `<span class="dot" style="background-color: ${cm.dotColor}"></span>${cm.label}`;
+                button.setAttribute('aria-label', `Highlight ${cm.label}`);
+                button.setAttribute('title', `Highlight all ${cm.label}`);
+                
+                button.addEventListener('mouseenter', () => setHoveredCategory(cm.key));
+                button.addEventListener('mouseleave', () => setHoveredCategory(null));
+                button.addEventListener('focus', () => setHoveredCategory(cm.key));
+                button.addEventListener('blur', () => setHoveredCategory(null));
+                
+                legendChipsContainer.appendChild(button);
+            });
 
-            const closeModal = useCallback(() => {
-                setIsModalOpen(false);
-                setTimeout(() => setModalElement(null), 300);
-            }, []);
+            if (hoveredCategory) {
+                const resetBtn = document.createElement('button');
+                resetBtn.className = 'legend-chip';
+                resetBtn.style.cursor = 'pointer';
+                resetBtn.style.borderColor = 'var(--border-strong)';
+                resetBtn.innerHTML = '✕ Reset';
+                resetBtn.addEventListener('click', () => setHoveredCategory(null));
+                legendChipsContainer.appendChild(resetBtn);
+            }
+        }
 
-            const handleFilter = useCallback((filter) => {
-                setActiveFilter(filter);
-                setHoveredCategory(null);
-                setIsMenuOpen(false);
-                setIsDropdownOpen(false);
-            }, []);
+        function setHoveredCategory(categoryKey) {
+            hoveredCategory = categoryKey;
+            renderUI();
+            updateGridState();
+        }
 
-            const handleLegendHover = useCallback((categoryKey) => {
-                setHoveredCategory(categoryKey);
-            }, []);
+        // ── Periodic Grid Builder ──────────────
+        // Helper to retrieve element data matching row and column coordinate
+        function getElement(row, col) {
+            return elementsData.find(el => el.row === row && el.col === col);
+        }
 
-            const handleLegendLeave = useCallback(() => {
-                setHoveredCategory(null);
-            }, []);
+        function buildGridStructure() {
+            tableBody.innerHTML = '';
 
-            // ── Props ──────────────────────
-            const cellProps = useMemo(() => ({
-                query,
-                activeFilter,
-                hoveredCategory,
-                onCellClick: handleCellClick
-            }), [query, activeFilter, hoveredCategory, handleCellClick]);
+            // Header Row (1-18)
+            const headerRow = document.createElement('tr');
+            const emptyCorner = document.createElement('td');
+            emptyCorner.className = 'empty';
+            headerRow.appendChild(emptyCorner);
+            for (let i = 1; i <= 18; i++) {
+                const th = document.createElement('th');
+                th.innerText = i;
+                headerRow.appendChild(th);
+            }
+            tableBody.appendChild(headerRow);
 
-            const dropdownItems = useMemo(() => [
-                { key: 'all', i: 'fa-eye', t: 'Show All (118)' },
-                { key: 'gas', i: 'fa-cloud', t: 'Gas (11)' },
-                { key: 'noble-gas', i: 'fa-shield-alt', t: 'Inert — Noble Gases (6)' },
-                { key: 'chalcogen', i: 'fa-atom', t: 'Chalcogens (6)' },
-                { key: 'pnictogen', i: 'fa-atom', t: 'Pnictogens (6)' },
-                { key: 'solid', i: 'fa-cube', t: 'Solid (103)' },
-                { key: 'liquid', i: 'fa-tint', t: 'Liquid (2)' },
-                { key: 'radioactive', i: 'fa-radiation', t: 'Radioactive (38)' },
-                { key: 'metal', i: 'fa-hammer', t: 'Metals (91)' },
-                { key: 'nonmetal', i: 'fa-leaf', t: 'Non-Metals (17)' },
-                { key: 'semiconductor', i: 'fa-microchip', t: 'Semiconductors (7)' },
-                { key: 's-block', i: 'fa-square', t: 's-block (12)' },
-                { key: 'p-block', i: 'fa-square', t: 'p-block (35)' },
-                { key: 'd-block', i: 'fa-square', t: 'd-block (40)' },
-                { key: 'f-block', i: 'fa-square', t: 'f-block (31)' },
-                { key: 'alkali-metal', i: 'fa-burn', t: 'Alkali Metals (6)' },
-                { key: 'alkaline-earth', i: 'fa-mountain', t: 'Alkaline Earth Metals (6)' },
-                { key: 'synthetic', i: 'fa-flask', t: 'Synthetic (26)' },
-                { key: 'reactive', i: 'fa-exclamation-triangle', t: 'Highly Reactive (11)' },
-                { key: 'essential', i: 'fa-dna', t: 'Essential — Biological (10)' },
-                { key: 'magnetic', i: 'fa-magnet', t: 'Magnetic (4)' },
-                { key: 'rare-earth', i: 'fa-gem', t: 'Rare Earth (17)' },
-                { key: 'halogen', i: 'fa-burn', t: 'Halogens (6)' },
-                { key: 'multi-oxidation', i: 'fa-exchange-alt', t: 'Multiple Oxidation States (7)' },
-            ], []);
+            // Row 1 to 7
+            for (let r = 1; r <= 7; r++) {
+                const tr = document.createElement('tr');
+                const rowNumCell = document.createElement('td');
+                rowNumCell.className = 'empty row-num';
+                rowNumCell.innerText = r;
+                tr.appendChild(rowNumCell);
 
-            return (
-                <>
-                    {/* ── Navbar ──────────────── */}
-                    <nav className={`navbar ${isNavHidden ? 'hidden' : ''}`}>
-                        <div className="brand">
-                            <div className="brand-icon" aria-hidden="true">
-                                <i className="fas fa-atom"></i>
-                            </div>
-                            <span>Elementa</span>
-                        </div>
-                        <div className="search-container">
-                            <div className="search-box">
-                                <i className="fas fa-search search-icon"></i>
-                                <input
-                                    type="search"
-                                    placeholder="Search elements..."
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                    aria-label="Search elements"
-                                />
-                                <button
-                                    className="search-clear"
-                                    onClick={() => setQuery('')}
-                                    aria-label="Clear search"
-                                    tabIndex={-1}
-                                >
-                                    <i className="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="nav-actions">
-                            <button
-                                className="theme-toggle"
-                                onClick={toggleTheme}
-                                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-                                title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-                            >
-                                <i className={`fas fa-${theme === 'dark' ? 'sun' : 'moon'}`}></i>
-                            </button>
-                            <button
-                                className="hamburger"
-                                onClick={() => setIsMenuOpen(true)}
-                                aria-label="Open menu"
-                            >
-                                <i className="fas fa-bars"></i>
-                            </button>
-                        </div>
-                    </nav>
+                for (let c = 1; c <= 18; c++) {
+                    const elem = getElement(r, c);
+                    if (elem) {
+                        const td = createElementCell(elem);
+                        tr.appendChild(td);
+                    } else {
+                        const tdEmpty = document.createElement('td');
+                        tdEmpty.className = 'empty';
+                        if (r === 6 && c === 3) {
+                            tdEmpty.setAttribute('data-label', 'Lanthanides (58–71)');
+                        } else if (r === 7 && c === 3) {
+                            tdEmpty.setAttribute('data-label', 'Actinides (90–103)');
+                        }
+                        tr.appendChild(tdEmpty);
+                    }
+                }
+                tableBody.appendChild(tr);
+            }
 
-                    {/* ── Side Overlay ────────── */}
-                    <div className={`side-overlay ${isMenuOpen ? 'open' : ''}`} onClick={() => { setIsMenuOpen(false);
-                        setIsDropdownOpen(false); }}></div>
+            // Lanthanides extra row
+            const lanthRow = document.createElement('tr');
+            const lanthLabelCell = document.createElement('td');
+            lanthLabelCell.className = 'empty';
+            lanthLabelCell.colSpan = 3;
+            lanthLabelCell.style.fontSize = '11px';
+            lanthLabelCell.style.fontWeight = '500';
+            lanthLabelCell.style.color = 'var(--text-muted)';
+            lanthLabelCell.style.textAlign = 'right';
+            lanthLabelCell.style.paddingRight = '8px';
+            lanthLabelCell.innerText = 'Lanthanides';
+            lanthRow.appendChild(lanthLabelCell);
 
-                    {/* ── Side Menu ───────────── */}
-                    <div className={`side-menu ${isMenuOpen ? 'open' : ''}`} ref={menuRef}>
-                        <div className="side-menu-header">
-                            <span>Menu</span>
-                            <button className="close-btn" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
-                                <i className="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <ul className="menu-list">
-                            <li><a href="index.html"><i className="fas fa-home"></i> Home</a></li>
-                            <li><a href="home.html"><i className="fas fa-table"></i> Periodic Table</a></li>
-                            <li>
-                                <button
-                                    className={`dropdown-toggle ${isDropdownOpen ? 'active' : ''}`}
-                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                >
-                                    <i className="fas fa-list"></i> Elements List
-                                    <i className="fas fa-chevron-down chevron"></i>
-                                </button>
-                                <ul className={`dropdown-content ${isDropdownOpen ? 'open' : ''}`}>
-                                    {dropdownItems.map(item => (
-                                        <li key={item.key}>
-                                            <a href="#" onClick={(e) => { e.preventDefault();
-                                                handleFilter(item.key); }}>
-                                                <i className={`fas ${item.i}`}></i> {item.t}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                            <li><a href="compare.html"><i className="fas fa-balance-scale"></i> Compare Elements</a></li>
-                            <li><a href="chemical-nature.html"><i class="fas fa-flask"></i> Chemical Nature</a></li>
-                            <li><a href="about.html"><i className="fas fa-info-circle"></i> About</a></li>
-                            <li><a href="contact.html"><i className="fas fa-envelope"></i> Contact</a></li>
-                        </ul>
-                    </div>
+            for (let c = 4; c <= 17; c++) {
+                const elem = getElement(8, c);
+                lanthRow.appendChild(createElementCell(elem));
+            }
+            const lanthEmpty = document.createElement('td');
+            lanthEmpty.className = 'empty';
+            lanthEmpty.colSpan = 2;
+            lanthRow.appendChild(lanthEmpty);
+            tableBody.appendChild(lanthRow);
 
-                    {/* ── Main Content ────────── */}
-                    <div className="container">
-                        <h1 className="page-title">Elementa</h1>
-                        <p className="page-subtitle">Interactive Periodic Table</p>
+            // Actinides extra row
+            const actRow = document.createElement('tr');
+            const actLabelCell = document.createElement('td');
+            actLabelCell.className = 'empty';
+            actLabelCell.colSpan = 3;
+            actLabelCell.style.fontSize = '11px';
+            actLabelCell.style.fontWeight = '500';
+            actLabelCell.style.color = 'var(--text-muted)';
+            actLabelCell.style.textAlign = 'right';
+            actLabelCell.style.paddingRight = '8px';
+            actLabelCell.innerText = 'Actinides';
+            actRow.appendChild(actLabelCell);
 
-                        <div className="filter-row">
-                            <span id="filter-indicator">
-                                <i className="fas fa-layer-group" style={{ marginRight: '6px', color: 'var(--accent)' }}></i>
-                                {filterMap[activeFilter] || 'All Elements (118)'}
-                            </span>
-                            {activeFilter !== 'all' && (
-                                <button
-                                    className="filter-badge"
-                                    onClick={() => handleFilter('all')}
-                                    style={{ cursor: 'pointer', border: 'none', fontFamily: 'var(--font-body)' }}
-                                    title="Clear filter"
-                                >
-                                    ✕ Clear
-                                </button>
-                            )}
-                        </div>
+            for (let c = 4; c <= 17; c++) {
+                const elem = getElement(9, c);
+                actRow.appendChild(createElementCell(elem));
+            }
+            const actEmpty = document.createElement('td');
+            actEmpty.className = 'empty';
+            actEmpty.colSpan = 2;
+            actRow.appendChild(actEmpty);
+            tableBody.appendChild(actRow);
+        }
 
-                        {/* ── Legend Chips (Feature 3: Interactive Category Legend) ── */}
-                        <div className="legend-chips">
-                            {categoryMeta.map(cm => (
-                                <button
-                                    key={cm.key}
-                                    className={`legend-chip ${hoveredCategory === cm.key ? 'active-chip' : ''}`}
-                                    onMouseEnter={() => handleLegendHover(cm.key)}
-                                    onMouseLeave={handleLegendLeave}
-                                    onFocus={() => handleLegendHover(cm.key)}
-                                    onBlur={handleLegendLeave}
-                                    aria-label={`Highlight ${cm.label}`}
-                                    title={`Highlight all ${cm.label}`}
-                                >
-                                    <span className="dot" style={{ backgroundColor: cm.dotColor }}></span>
-                                    {cm.label}
-                                </button>
-                            ))}
-                            {hoveredCategory && (
-                                <button
-                                    className="legend-chip"
-                                    onClick={handleLegendLeave}
-                                    style={{ cursor: 'pointer', borderColor: 'var(--border-strong)' }}
-                                >
-                                    ✕ Reset
-                                </button>
-                            )}
-                        </div>
+        // Element Cell Generator (Replaces ElementCell component)
+        function createElementCell(elem) {
+            const td = document.createElement('td');
+            td.id = `elem-cell-${elem.n}`;
+            td.className = elem.c;
+            td.setAttribute('role', 'button');
+            td.setAttribute('aria-label', `${elem.nm}, Atomic Number ${elem.n}`);
+            td.setAttribute('title', `${elem.nm} (${elem.s}) — Atomic Number ${elem.n}`);
 
-                        {/* ── Table ──────────────── */}
-                        <div className="table-wrapper" ref={tableWrapperRef}>
-                            <div className={`scroll-shadow-left ${scrollShadows.left ? 'visible' : ''}`}></div>
-                            <div className={`scroll-shadow-right ${scrollShadows.right ? 'visible' : ''}`}></div>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td className="empty"></td>
-                                        <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th>
-                                        <th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th>
-                                        <th>17</th><th>18</th>
-                                    </tr>
-                                    <tr>
-                                        <td className="empty row-num">1</td>
-                                        <ElementCell n={1} m="1" s="H" nm="Hydrogen" c="alkali-metal" {...cellProps} />
-                                        <td className="empty" colSpan="16"></td>
-                                        <ElementCell n={2} m="4" s="He" nm="Helium" c="noble-gas" {...cellProps} />
-                                    </tr>
-                                    <tr>
-                                        <td className="empty row-num">2</td>
-                                        <ElementCell n={3} m="7" s="Li" nm="Lithium" c="alkali-metal" {...cellProps} />
-                                        <ElementCell n={4} m="9" s="Be" nm="Beryllium" c="alkaline-earth" {...cellProps} />
-                                        <td className="empty" colSpan="10"></td>
-                                        <ElementCell n={5} m="11" s="B" nm="Boron" c="metalloid" {...cellProps} />
-                                        <ElementCell n={6} m="12" s="C" nm="Carbon" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={7} m="14" s="N" nm="Nitrogen" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={8} m="16" s="O" nm="Oxygen" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={9} m="19" s="F" nm="Fluorine" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={10} m="20" s="Ne" nm="Neon" c="noble-gas" {...cellProps} />
-                                    </tr>
-                                    <tr>
-                                        <td className="empty row-num">3</td>
-                                        <ElementCell n={11} m="23" s="Na" nm="Sodium" c="alkali-metal" {...cellProps} />
-                                        <ElementCell n={12} m="24" s="Mg" nm="Magnesium" c="alkaline-earth" {...cellProps} />
-                                        <td className="empty" colSpan="10"></td>
-                                        <ElementCell n={13} m="27" s="Al" nm="Aluminum" c="post-transition" {...cellProps} />
-                                        <ElementCell n={14} m="28" s="Si" nm="Silicon" c="metalloid" {...cellProps} />
-                                        <ElementCell n={15} m="31" s="P" nm="Phosphorus" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={16} m="32" s="S" nm="Sulfur" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={17} m="36" s="Cl" nm="Chlorine" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={18} m="40" s="Ar" nm="Argon" c="noble-gas" {...cellProps} />
-                                    </tr>
-                                    <tr>
-                                        <td className="empty row-num">4</td>
-                                        <ElementCell n={19} m="39" s="K" nm="Potassium" c="alkali-metal" {...cellProps} />
-                                        <ElementCell n={20} m="40" s="Ca" nm="Calcium" c="alkaline-earth" {...cellProps} />
-                                        <ElementCell n={21} m="45" s="Sc" nm="Scandium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={22} m="48" s="Ti" nm="Titanium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={23} m="51" s="V" nm="Vanadium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={24} m="52" s="Cr" nm="Chromium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={25} m="55" s="Mn" nm="Manganese" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={26} m="56" s="Fe" nm="Iron" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={27} m="59" s="Co" nm="Cobalt" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={28} m="59" s="Ni" nm="Nickel" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={29} m="64" s="Cu" nm="Copper" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={30} m="65" s="Zn" nm="Zinc" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={31} m="70" s="Ga" nm="Gallium" c="post-transition" {...cellProps} />
-                                        <ElementCell n={32} m="73" s="Ge" nm="Germanium" c="metalloid" {...cellProps} />
-                                        <ElementCell n={33} m="75" s="As" nm="Arsenic" c="metalloid" {...cellProps} />
-                                        <ElementCell n={34} m="79" s="Se" nm="Selenium" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={35} m="80" s="Br" nm="Bromine" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={36} m="84" s="Kr" nm="Krypton" c="noble-gas" {...cellProps} />
-                                    </tr>
-                                    <tr>
-                                        <td className="empty row-num">5</td>
-                                        <ElementCell n={37} m="85" s="Rb" nm="Rubidium" c="alkali-metal" {...cellProps} />
-                                        <ElementCell n={38} m="88" s="Sr" nm="Strontium" c="alkaline-earth" {...cellProps} />
-                                        <ElementCell n={39} m="89" s="Y" nm="Yttrium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={40} m="91" s="Zr" nm="Zirconium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={41} m="93" s="Nb" nm="Niobium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={42} m="96" s="Mo" nm="Molybdenum" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={43} m="98" s="Tc" nm="Technetium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={44} m="101" s="Ru" nm="Ruthenium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={45} m="103" s="Rh" nm="Rhodium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={46} m="106" s="Pd" nm="Palladium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={47} m="108" s="Ag" nm="Silver" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={48} m="112" s="Cd" nm="Cadmium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={49} m="115" s="In" nm="Indium" c="post-transition" {...cellProps} />
-                                        <ElementCell n={50} m="119" s="Sn" nm="Tin" c="post-transition" {...cellProps} />
-                                        <ElementCell n={51} m="122" s="Sb" nm="Antimony" c="metalloid" {...cellProps} />
-                                        <ElementCell n={52} m="128" s="Te" nm="Tellurium" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={53} m="127" s="I" nm="Iodine" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={54} m="131" s="Xe" nm="Xenon" c="noble-gas" {...cellProps} />
-                                    </tr>
-                                    <tr>
-                                        <td className="empty row-num">6</td>
-                                        <ElementCell n={55} m="133" s="Cs" nm="Cesium" c="alkali-metal" {...cellProps} />
-                                        <ElementCell n={56} m="137" s="Ba" nm="Barium" c="alkaline-earth" {...cellProps} />
-                                        <td className="empty" data-label="Lanthanides (58–71)"></td>
-                                        <ElementCell n={72} m="178" s="Hf" nm="Hafnium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={73} m="181" s="Ta" nm="Tantalum" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={74} m="184" s="W" nm="Tungsten" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={75} m="186" s="Re" nm="Rhenium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={76} m="190" s="Os" nm="Osmium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={77} m="192" s="Ir" nm="Iridium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={78} m="195" s="Pt" nm="Platinum" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={79} m="197" s="Au" nm="Gold" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={80} m="201" s="Hg" nm="Mercury" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={81} m="204" s="Tl" nm="Thallium" c="post-transition" {...cellProps} />
-                                        <ElementCell n={82} m="207" s="Pb" nm="Lead" c="post-transition" {...cellProps} />
-                                        <ElementCell n={83} m="209" s="Bi" nm="Bismuth" c="post-transition" {...cellProps} />
-                                        <ElementCell n={84} m="209" s="Po" nm="Polonium" c="metalloid" {...cellProps} />
-                                        <ElementCell n={85} m="210" s="At" nm="Astatine" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={86} m="222" s="Rn" nm="Radon" c="noble-gas" {...cellProps} />
-                                    </tr>
-                                    <tr>
-                                        <td className="empty row-num">7</td>
-                                        <ElementCell n={87} m="223" s="Fr" nm="Francium" c="alkali-metal" {...cellProps} />
-                                        <ElementCell n={88} m="226" s="Ra" nm="Radium" c="alkaline-earth" {...cellProps} />
-                                        <td className="empty" data-label="Actinides (90–103)"></td>
-                                        <ElementCell n={104} m="[267]" s="Rf" nm="Rutherfordium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={105} m="[268]" s="Db" nm="Dubnium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={106} m="[269]" s="Sg" nm="Seaborgium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={107} m="[270]" s="Bh" nm="Bohrium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={108} m="[269]" s="Hs" nm="Hassium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={109} m="[278]" s="Mt" nm="Meitnerium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={110} m="[281]" s="Ds" nm="Darmstadtium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={111} m="[281]" s="Rg" nm="Roentgenium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={112} m="[285]" s="Cn" nm="Copernicium" c="transition-metal" {...cellProps} />
-                                        <ElementCell n={113} m="[286]" s="Nh" nm="Nihonium" c="post-transition" {...cellProps} />
-                                        <ElementCell n={114} m="[289]" s="Fl" nm="Flerovium" c="post-transition" {...cellProps} />
-                                        <ElementCell n={115} m="[289]" s="Mc" nm="Moscovium" c="post-transition" {...cellProps} />
-                                        <ElementCell n={116} m="[293]" s="Lv" nm="Livermorium" c="post-transition" {...cellProps} />
-                                        <ElementCell n={117} m="[294]" s="Ts" nm="Tennessine" c="nonmetal" {...cellProps} />
-                                        <ElementCell n={118} m="[294]" s="Og" nm="Oganesson" c="noble-gas" {...cellProps} />
-                                    </tr>
-                                    <tr>
-                                        <td className="empty" colSpan="3" style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)', textAlign: 'right', paddingRight: '8px' }}>Lanthanides</td>
-                                        <ElementCell n={58} m="140" s="Ce" nm="Cerium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={59} m="141" s="Pr" nm="Praseodymium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={60} m="144" s="Nd" nm="Neodymium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={61} m="145" s="Pm" nm="Promethium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={62} m="150" s="Sm" nm="Samarium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={63} m="152" s="Eu" nm="Europium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={64} m="157" s="Gd" nm="Gadolinium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={65} m="159" s="Tb" nm="Terbium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={66} m="163" s="Dy" nm="Dysprosium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={67} m="165" s="Ho" nm="Holmium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={68} m="167" s="Er" nm="Erbium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={69} m="169" s="Tm" nm="Thulium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={70} m="173" s="Yb" nm="Ytterbium" c="lanthanide" {...cellProps} />
-                                        <ElementCell n={71} m="175" s="Lu" nm="Lutetium" c="lanthanide" {...cellProps} />
-                                        <td className="empty" colSpan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td className="empty" colSpan="3" style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)', textAlign: 'right', paddingRight: '8px' }}>Actinides</td>
-                                        <ElementCell n={90} m="232" s="Th" nm="Thorium" c="actinide" {...cellProps} />
-                                        <ElementCell n={91} m="231" s="Pa" nm="Protactinium" c="actinide" {...cellProps} />
-                                        <ElementCell n={92} m="238" s="U" nm="Uranium" c="actinide" {...cellProps} />
-                                        <ElementCell n={93} m="237" s="Np" nm="Neptunium" c="actinide" {...cellProps} />
-                                        <ElementCell n={94} m="244" s="Pu" nm="Plutonium" c="actinide" {...cellProps} />
-                                        <ElementCell n={95} m="243" s="Am" nm="Americium" c="actinide" {...cellProps} />
-                                        <ElementCell n={96} m="247" s="Cm" nm="Curium" c="actinide" {...cellProps} />
-                                        <ElementCell n={97} m="247" s="Bk" nm="Berkelium" c="actinide" {...cellProps} />
-                                        <ElementCell n={98} m="251" s="Cf" nm="Californium" c="actinide" {...cellProps} />
-                                        <ElementCell n={99} m="252" s="Es" nm="Einsteinium" c="actinide" {...cellProps} />
-                                        <ElementCell n={100} m="257" s="Fm" nm="Fermium" c="actinide" {...cellProps} />
-                                        <ElementCell n={101} m="258" s="Md" nm="Mendelevium" c="actinide" {...cellProps} />
-                                        <ElementCell n={102} m="259" s="No" nm="Nobelium" c="actinide" {...cellProps} />
-                                        <ElementCell n={103} m="266" s="Lr" nm="Lawrencium" c="actinide" {...cellProps} />
-                                        <td className="empty" colSpan="2"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            td.innerHTML = `
+                <span class="atomic-number">${elem.n}</span>
+                <span class="atomic-mass">${elem.m}</span>
+                <span class="symbol">${elem.s}</span>
+                <span class="name">${elem.nm}</span>
+            `;
 
-                    {/* ── Quick-View Modal (Feature 2) ── */}
-                    <QuickViewModal
-                        isOpen={isModalOpen}
-                        element={modalElement}
-                        onClose={closeModal}
-                        onViewFullDetails={handleViewFullDetails}
-                    />
+            const triggerClick = () => {
+                if (!td.classList.contains('faded')) {
+                    openModal(elem);
+                }
+            };
 
-                    {/* ── Footer ──────────────── */}
-                    <footer>
-                        <span>Data sourced from IUPAC · Atomic masses rounded for simplicity; synthetic elements in brackets [ ].</span>
-                        <span>
-                            <a href="https://modern-periodic-table.netlify.app" rel="cc:attributionURL">
-                                Elementa <i className="fas fa-atom"></i> Periodic Table
-                            </a> by{' '}
-                            <a href="https://rifatuzzaman-rifat.github.io/rifats" rel="cc:attributionURL dct:creator">
-                                Rifatuzzaman & Urfa Hasan Fattah
-                            </a> is licensed under{' '}
-                            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer">
-                                CC BY-NC-SA 4.0
-                                <span className="cc-icons">
-                                    <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="CC" />
-                                    <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="BY" />
-                                    <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="NC" />
-                                    <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt="SA" />
-                                </span>
-                            </a>
-                        </span>
-                    </footer>
-                </>
-            );
-        };
+            td.addEventListener('click', triggerClick);
+            td.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') triggerClick();
+            });
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+            return td;
+        }
+
+        // ── Real-Time DOM Updates ──────────────
+        function updateGridState() {
+            const query = searchQuery.toLowerCase();
+            elementsData.forEach(elem => {
+                const td = document.getElementById(`elem-cell-${elem.n}`);
+                if (!td) return;
+
+                const matchesQuery = !query || elem.nm.toLowerCase().includes(query) || elem.s.toLowerCase().includes(query) || elem.n.toString() === query;
+                const matchesFilter = checkMatch(elem.n, elem.c, activeFilter);
+                const isVisible = matchesQuery && matchesFilter;
+                const isHighlighted = hoveredCategory && hoveredCategory === elem.c && isVisible;
+
+                if (isVisible) {
+                    td.classList.remove('faded');
+                    td.setAttribute('tabindex', '0');
+                } else {
+                    td.classList.add('faded');
+                    td.setAttribute('tabindex', '-1');
+                }
+
+                if (isHighlighted) {
+                    td.classList.add('highlighted');
+                } else {
+                    td.classList.remove('highlighted');
+                }
+            });
+        }
+
+        // ── Search & Filter Listeners ──────────
+        function setFilter(filter) {
+            activeFilter = filter;
+            filterText.innerText = filterMap[filter] || 'All Elements (118)';
+            if (filter !== 'all') {
+                filterClearBadge.style.display = 'inline-block';
+            } else {
+                filterClearBadge.style.display = 'none';
+            }
+            updateGridState();
+        }
+
+        filterClearBadge.addEventListener('click', () => {
+            setFilter('all');
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            updateGridState();
+        });
+
+        searchClearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            searchQuery = '';
+            updateGridState();
+        });
+
+        // ── Scroll Shadow Helper ──────────────
+        function updateScrollShadows() {
+            const el = tableWrapper;
+            if (!el) return;
+            const hasRight = el.scrollWidth > el.clientWidth + el.scrollLeft + 2;
+            const hasLeft = el.scrollLeft > 2;
+
+            if (hasLeft) shadowLeft.classList.add('visible');
+            else shadowLeft.classList.remove('visible');
+
+            if (hasRight) shadowRight.classList.add('visible');
+            else shadowRight.classList.remove('visible');
+        }
+
+        tableWrapper.addEventListener('scroll', updateScrollShadows, { passive: true });
+        window.addEventListener('resize', updateScrollShadows);
+
+        // ── Auto-hide Header On Scroll ────────
+        let lastScrollY = window.pageYOffset;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.pageYOffset;
+            const navbar = document.getElementById('navbar');
+            if (currentScrollY > lastScrollY && currentScrollY > 60) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+
+        // ── Modal Handling ────────────────────
+        function openModal(elem) {
+            selectedElement = elem;
+            const categoryMetaObj = categoryMeta.find(cm => cm.key === elem.c);
+            const categoryLabel = categoryMetaObj ? categoryMetaObj.label : elem.c;
+
+            modalSymbol.innerText = elem.s;
+            modalName.innerText = elem.nm;
+            modalBadge.innerText = categoryLabel;
+            modalNum.innerText = elem.n;
+            modalMass.innerText = elem.m;
+
+            modalOverlay.classList.add('open');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('open');
+            selectedElement = null;
+        }
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalCancelBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        modalDetailsBtn.addEventListener('click', async () => {
+            if (!selectedElement) return;
+            const atomicNumber = selectedElement.n;
+            try {
+                const response = await fetch('atoms.json');
+                if (!response.ok) throw new Error('Failed to fetch atom data');
+                const atomsData = await response.json();
+                const atom = atomsData[atomicNumber];
+                if (!atom) {
+                    alert('Details for this element are not available.');
+                    return;
+                }
+                sessionStorage.setItem('selectedAtom', JSON.stringify(atom));
+                window.location.href = 'atom-details.html';
+            } catch (error) {
+                console.error("Error fetching atom data:", error);
+                alert('An error occurred while fetching element details. Please ensure you are running on a server.');
+            }
+        });
+
+        // ── Initialization Entry Point ────────
+        window.addEventListener('DOMContentLoaded', () => {
+            buildGridStructure();
+            renderUI();
+            updateGridState();
+            setTimeout(updateScrollShadows, 100);
+        });
     </script>
 </body>
 </html>
+
